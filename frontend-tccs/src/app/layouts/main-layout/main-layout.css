@@ -1,0 +1,3 @@
+.main-content {
+    padding: calc(var(--navbar-height) + 2rem) 2rem 2rem 2rem;
+}

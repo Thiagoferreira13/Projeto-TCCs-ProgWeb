@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-tccs',
   imports: [RouterOutlet],
-  template: `<router-outlet></router-outlet>`
+  templateUrl: './tccs.html',
+  styleUrl: './tccs.css',
 })
-export class App {}
+export class Tccs {}
