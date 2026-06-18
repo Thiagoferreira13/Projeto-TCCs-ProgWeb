@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-professores',
   imports: [RouterOutlet],
-  template: `<router-outlet></router-outlet>`
+  templateUrl: './professores.html',
+  styleUrl: './professores.css',
 })
-export class App {}
+export class Professores {}
