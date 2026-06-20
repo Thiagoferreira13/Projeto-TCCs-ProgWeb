@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Tccs } from './tccs';
+import { TccCreate } from './tcc-create';
 
-describe('Tccs', () => {
-  let component: Tccs;
-  let fixture: ComponentFixture<Tccs>;
+describe('TccCreate', () => {
+  let component: TccCreate;
+  let fixture: ComponentFixture<TccCreate>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Tccs],
+      imports: [TccCreate],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Tccs);
+    fixture = TestBed.createComponent(TccCreate);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

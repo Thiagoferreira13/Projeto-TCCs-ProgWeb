@@ -6,7 +6,9 @@ import { Alunos } from './features/alunos/alunos';
 import { Cursos } from './features/cursos/cursos';
 import { Departamentos } from './features/departamentos/departamentos';
 import { Professores } from './features/professores/professores';
-import { Tccs } from './features/tccs/tccs';
+import { Tccs } from './features/tccs/tccs-list/tccs-list';
+import { TccCreate } from './features/tccs/tcc-create/tcc-create';
+import { TccEdit } from './features/tccs/tcc-edit/tcc-edit';
 import { UnidadesAcademicas } from './features/unidades-academicas/unidades-academicas';
 
 export const routes: Routes = [
@@ -37,6 +39,14 @@ export const routes: Routes = [
             {
                 path: "tccs",
                 component: Tccs
+            },
+            {
+                path: "tccs/novo",
+                component: TccCreate
+            },
+            {
+                path: "tccs/:id/editar",
+                component: TccEdit
             },
             {
                 path: "unidades-academicas",

@@ -1,0 +1,46 @@
+<!-- Overlay que escurece o fundo -->
+<div class="modal-overlay" (click)="onCancelar()">
+
+  <!-- Card do modal (impede que o clique nele feche o modal) -->
+  <div class="modal-card" (click)="$event.stopPropagation()">
+
+    <div class="modal-card__icon-wrapper">
+      <mat-icon class="modal-card__icon">warning</mat-icon>
+    </div>
+
+    <h2 class="modal-card__title">Excluir Trabalho de Conclusão de Curso</h2>
+    <p class="modal-card__subtitle">
+      Esta ação é irreversível. Todos os dados e o arquivo associado a este TCC serão removidos permanentemente.
+    </p>
+
+    @if (tcc) {
+    <div class="tcc-summary">
+      <div class="tcc-summary__row">
+        <span class="tcc-summary__label">Título</span>
+        <span class="tcc-summary__value">{{ tcc.titulo }}</span>
+      </div>
+      <div class="tcc-summary__row">
+        <span class="tcc-summary__label">ID</span>
+        <span class="tcc-summary__value">{{ tcc.id }}</span>
+      </div>
+      <div class="tcc-summary__row">
+        <span class="tcc-summary__label">Aluno</span>
+        <span class="tcc-summary__value">{{ tcc.aluno }}</span>
+      </div>
+      <div class="tcc-summary__row">
+        <span class="tcc-summary__label">Status</span>
+        <span [class]="getBadgeClass(tcc.status)">{{ tcc.status }}</span>
+      </div>
+    </div>
+    }
+
+    <div class="modal-card__actions">
+      <button class="btn-text" (click)="onCancelar()">Cancelar</button>
+      <button class="btn-danger" (click)="onConfirmar()">
+        <mat-icon>delete</mat-icon>
+        Excluir Definitivamente
+      </button>
+    </div>
+
+  </div>
+</div>
