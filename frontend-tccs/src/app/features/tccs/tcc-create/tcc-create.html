@@ -10,15 +10,19 @@
     </div>
   </div>
 
+  @if (erro()) {
+  <div class="form-error">{{ erro() }}</div>
+  }
+
   <!-- FORMULÁRIO (componente reutilizável) -->
   <app-tcc-form></app-tcc-form>
 
   <!-- AÇÕES -->
   <div class="form-actions">
-    <button class="btn-text" (click)="cancelar()">Cancelar</button>
-    <button class="btn-primary" (click)="salvar()">
+    <button class="btn-text" (click)="cancelar()" [disabled]="salvando()">Cancelar</button>
+    <button class="btn-primary" (click)="salvar()" [disabled]="salvando()">
       <mat-icon>save</mat-icon>
-      Salvar TCC
+      {{ salvando() ? 'Salvando...' : 'Salvar TCC' }}
     </button>
   </div>
 

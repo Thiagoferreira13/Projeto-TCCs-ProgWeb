@@ -8,7 +8,7 @@
         Gerencie e acompanhe o status de todos os Termos de Conclusão de Curso.
       </p>
     </div>
-    <button class="btn-primary">
+    <button class="btn-primary" routerLink="/tccs/novo">
       <mat-icon>add_to_photos</mat-icon> Novo TCC
     </button>
   </div>
@@ -103,8 +103,8 @@
         </div>
         <!--Ações-->
         <div class="table-row__col col-actions">
-          <mat-icon class="action-icon action-icon--edit">edit</mat-icon>
-          <mat-icon class="action-icon action-icon--view">visibility</mat-icon>
+          <mat-icon class="action-icon action-icon--edit" (click)="irParaEdicao(tcc)">edit</mat-icon>
+          <mat-icon class="action-icon action-icon--view" (click)="irParaDetalhes(tcc)">visibility</mat-icon>
           <mat-icon class="action-icon action-icon--delete" (click)="abrirModalExclusao(tcc)">delete</mat-icon>
         </div>
       </div>

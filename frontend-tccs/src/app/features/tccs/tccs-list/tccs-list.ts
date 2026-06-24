@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TccDeleteModal, TccResumo } from '../tcc-delete-modal/tcc-delete-modal';
 import { TccService } from '../tcc.service';
 import { Tcc } from '../tcc.model';
+import { Router, RouterLink } from '@angular/router';
 
 const ITENS_POR_PAGINA = 10;
 
@@ -18,7 +19,7 @@ const STATUS_OPTIONS = [
 
 @Component({
   selector: 'app-tccs',
-  imports: [MatIconModule, TccDeleteModal, FormsModule],
+  imports: [MatIconModule, TccDeleteModal, FormsModule, RouterLink],
   templateUrl: './tccs-list.html',
   styleUrls: ['./tccs-list.css', '../tccs-shared.css'],
 })
@@ -68,7 +69,10 @@ export class Tccs implements OnInit {
     return Array.from({ length: fim - inicio + 1 }, (_, i) => inicio + i);
   });
 
-  constructor(private tccService: TccService) {}
+  constructor(
+       private tccService: TccService,
+       private router: Router
+     ) {}
 
   ngOnInit() {
     this.carregarTccs();
@@ -165,5 +169,13 @@ export class Tccs implements OnInit {
         this.fecharModalExclusao();
       },
     });
+  }
+
+  irParaDetalhes(tcc: Tcc) {
+       this.router.navigate(['/tccs', tcc.id, 'detalhes']);
+  }
+
+  irParaEdicao(tcc: Tcc) {
+    this.router.navigate(['/tccs', tcc.id, 'editar']);
   }
 }

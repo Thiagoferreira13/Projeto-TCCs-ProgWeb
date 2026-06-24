@@ -9,17 +9,27 @@
     </div>
   </div>
 
-  <!-- FORMULÁRIO (componente reutilizável) -->
-  <app-tcc-form></app-tcc-form>
+  @if (carregando()) {
+  <div class="form-error" style="background-color: #f3f4f6; color: #6b7280;">Carregando dados do TCC...</div>
+  }
+
+  @if (erro()) {
+  <div class="form-error">{{ erro() }}</div>
+  }
+
+  @if (!carregando()) {
+  <!-- FORMULÁRIO (componente reutilizável), preenchido com os dados carregados -->
+  <app-tcc-form [tcc]="tcc()"></app-tcc-form>
 
   <!-- AÇÕES -->
   <div class="form-actions">
-    <button class="btn-text" (click)="cancelar()">Cancelar</button>
-    <button class="btn-primary" (click)="salvar()">
+    <button class="btn-text" (click)="cancelar()" [disabled]="salvando()">Cancelar</button>
+    <button class="btn-primary" (click)="salvar()" [disabled]="salvando()">
       <mat-icon>save</mat-icon>
-      Atualizar TCC
+      {{ salvando() ? 'Salvando...' : 'Atualizar TCC' }}
     </button>
   </div>
+  }
 
   <!--Footer da página-->
   <div class="page-footer">

@@ -9,8 +9,17 @@
     </div>
   </div>
 
-  <!-- FORMULÁRIO (componente reutilizável) -->
-  <app-tcc-form></app-tcc-form>
+  @if (carregando()) {
+  <div class="form-error" style="background-color: #f3f4f6; color: #6b7280;">Carregando dados do TCC...</div>
+  }
+
+  @if (erro()) {
+  <div class="form-error">{{ erro() }}</div>
+  }
+
+  @if (!carregando() && !erro()) {
+  <!-- FORMULÁRIO em modo somente leitura -->
+  <app-tcc-form [tcc]="tcc()" [somenteLeitura]="true"></app-tcc-form>
 
   <!-- AÇÕES-->
   <div class="form-actions">
@@ -20,6 +29,7 @@
       Editar
     </button>
   </div>
+  }
 
   <!--Footer da página-->
   <div class="page-footer">

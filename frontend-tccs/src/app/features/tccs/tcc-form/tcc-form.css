@@ -2,6 +2,12 @@
 /* ===== CLASSES REUTILIZÁVEIS DE FORM ====== */
 /* Usadas tanto na tela de criar quanto editar */
 /* =========================================== */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
 
 .form-card {
   background-color: white;
@@ -165,10 +171,7 @@
   color: #9ca3af;
 }
 
-/* Espaço entre cards consecutivos dentro do formulário */
-.form-card + .form-card {
-  margin-top: 20px;
-}
+
 
 /* ===== RESPONSIVIDADE ===== */
 @media (max-width: 900px) {
@@ -186,4 +189,3 @@
   }
 
 }
-

@@ -1,169 +1,149 @@
-<!--Card: Informações do Trabalho-->
-<div class="form-card">
-  <h2 class="form-card__title">
-    <mat-icon>description</mat-icon>
-    Informações do Trabalho
-  </h2>
+<form [formGroup]="form">
 
-  <!--Título-->
-  <div class="form-field">
-    <label class="form-label">Título do Trabalho</label>
-    <input type="text" class="form-input" placeholder="Insira o título completo do TCC" />
-  </div>
-
-  <!--Resumo-->
-  <div class="form-field">
-    <label class="form-label">Resumo</label>
-    <textarea class="form-textarea" placeholder="Breve descrição dos objetivos e resultados..."></textarea>
-  </div>
-
-  <!--Linha com Palavras-chave Tipo de Trabalho e idioma-->
-  <div class="form-row">
-    <!--Palavras-chave-->
-    <div class="form-field">
-      <label class="form-label">Palavras-chave</label>
-      <input class="form-input" type="text" placeholder="Ex: IA, Saúde, Python" />
-    </div>
-
-    <!--Tipo de Trabalho-->
-    <div class="form-field">
-      <label class="form-label">Tipo de Trabalho</label>
-      <select class="form-select">
-        <option>Monografia</option>
-        <option>Relatório de Estágio</option>
-        <option>Relatório Técnico</option>
-        <option>Artigo</option>
-      </select>
-    </div>
-
-    <!--Idioma-->
-    <div class="form-field">
-      <label class="form-label">Idioma</label>
-      <select class="form-select">
-        <option>Português</option>
-        <option>Inglês</option>
-      </select>
-    </div>
-
-  </div>
-</div>
-
-<!--Card: Dados do Aluno-->
-<div class="form-card">
-  <h2 class="form-card__title">
-    <mat-icon>person</mat-icon>
-    Dados do Aluno
-  </h2>
-
-  <!--Pesquisa de aluno-->
-  <div class="form-field">
-    <label class="form-label">Pesquisar Aluno (Nome ou Matrícula)</label>
-    <div class="search-input-wrapper">
-      <mat-icon class="search-input-wrapper__icon">search</mat-icon>
-      <input class="form-input form-input--search" type="text" placeholder="Ex: João da Silva" />
-    </div>
-  </div>
-
-  <!--Dados-->
-  <div class="aluno-preview">
-    <div class="aluno-preview__field">
-      <span class="aluno-preview__label">Nome Completo</span>
-      <span class="aluno-preview__value">--</span>
-    </div>
-    <div class="aluno-preview__field">
-      <span class="aluno-preview__label">Matrícula</span>
-      <span class="aluno-preview__value">--</span>
-    </div>
-    <div class="aluno-preview__field">
-      <span class="aluno-preview__label">Curso</span>
-      <span class="aluno-preview__value">--</span>
-    </div>
-  </div>
-</div>
-
-<!-- Linha com 2 Cards: Orientção e Defesa -->
-<div class="form-grid-2">
-
-  <!--Card esquerdo-->
+  <!--Card: Informações do Trabalho-->
   <div class="form-card">
     <h2 class="form-card__title">
-      <mat-icon>school</mat-icon>
-      Orientação
+      <mat-icon>description</mat-icon>
+      Informações do Trabalho
     </h2>
 
-    <!--orientador-->
+    <!--Título-->
     <div class="form-field">
-      <label class="form-label">Orientador</label>
-      <select class="form-select">
-        <option>Selecione o orientador</option>
-      </select>
+      <label class="form-label">Título do Trabalho</label>
+      <input type="text" class="form-input" formControlName="titulo" placeholder="Insira o título completo do TCC" />
     </div>
 
-    <!--coorientador-->
+    <!--Resumo-->
     <div class="form-field">
-      <label class="form-label">Coorientador (Opcional)</label>
-      <select class="form-select">
-        <option>Nenhum</option>
-      </select>
+      <label class="form-label">Resumo</label>
+      <textarea class="form-textarea" formControlName="resumo"
+        placeholder="Breve descrição dos objetivos e resultados..."></textarea>
+    </div>
+
+    <!--Linha com Palavras-chave Tipo de Trabalho e idioma-->
+    <div class="form-row">
+      <!--Palavras-chave-->
+      <div class="form-field">
+        <label class="form-label">Palavras-chave</label>
+        <input class="form-input" type="text" formControlName="palavras_chave" placeholder="Ex: IA, Saúde, Python" />
+      </div>
+
+      <!--Tipo de Trabalho-->
+      <div class="form-field">
+        <label class="form-label">Tipo de Trabalho</label>
+        <select class="form-select" formControlName="tipo">
+          <option value="MONOGRAFIA">Monografia</option>
+          <option value="RELATORIO_ESTAGIO">Relatório de Estágio</option>
+          <option value="RELATORIO_TECNICO">Relatório Técnico</option>
+          <option value="ARTIGO">Artigo</option>
+        </select>
+      </div>
+
+      <!--Idioma-->
+      <div class="form-field">
+        <label class="form-label">Idioma</label>
+        <select class="form-select" formControlName="idioma">
+          <option value="PT">Português</option>
+          <option value="EN">Inglês</option>
+        </select>
+      </div>
+
     </div>
   </div>
 
-  <!--Card direito-->
+  <!--Card: Dados do Aluno-->
   <div class="form-card">
     <h2 class="form-card__title">
-      <mat-icon>event</mat-icon>
-      Defesa e Arquivo
+      <mat-icon>person</mat-icon>
+      Dados do Aluno
     </h2>
 
-    <!--Semestre-->
+    <!--ID do Aluno (sem service de Aluno ainda, é o número do ID) -->
     <div class="form-field">
-      <label class="form-label">Semestre Letivo</label>
-      <select class="form-select">
-        <option>2024/2</option>
-      </select>
+      <label class="form-label">ID do Aluno</label>
+      <input class="form-input" type="number" formControlName="aluno" placeholder="Ex: 5" />
+    </div>
+  </div>
+
+  <!-- Linha com 2 Cards: Orientção e Defesa -->
+  <div class="form-grid-2">
+
+    <!--Card esquerdo-->
+    <div class="form-card">
+      <h2 class="form-card__title">
+        <mat-icon>school</mat-icon>
+        Orientação
+      </h2>
+
+      <!--orientador-->
+      <div class="form-field">
+        <label class="form-label">ID do Orientador</label>
+        <input class="form-input" type="number" formControlName="orientador" placeholder="Ex: 2" />
+      </div>
+
+      <!--coorientador-->
+      <div class="form-field">
+        <label class="form-label">ID do Coorientador (Opcional)</label>
+        <input class="form-input" type="number" formControlName="coorientador" placeholder="Ex: 3 (ou deixe vazio)" />
+      </div>
     </div>
 
-    <!--Upload-->
-    <div class="form-field">
-      <label class="form-label">Documento (PDF)</label>
-      <div class="file-upload">
-        <mat-icon>description</mat-icon>
-        <span>Clique para fazer upload do TCC</span>
+    <!--Card direito-->
+    <div class="form-card">
+      <h2 class="form-card__title">
+        <mat-icon>event</mat-icon>
+        Defesa e Arquivo
+      </h2>
+
+      <!--Status-->
+      <div class="form-field">
+        <label class="form-label">Status</label>
+        <select class="form-select" formControlName="status">
+          <option value="0">Em Elaboração</option>
+          <option value="1">Enviado</option>
+          <option value="2">Aprovado</option>
+          <option value="3">Reprovado</option>
+        </select>
+      </div>
+
+      <!--Semestre-->
+      <div class="form-field">
+        <label class="form-label">Semestre Letivo</label>
+        <input class="form-input" type="text" formControlName="semestre_letivo_defesa" placeholder="Ex: 2024/2" />
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- CARD: BANCA EXAMINADORA -->
+  <div class="form-card">
+    <h2 class="form-card__title">
+      <mat-icon>groups</mat-icon>
+      Banca Examinadora
+    </h2>
+
+    <!--linha com Presidente, Primeiro membro e segundo membro-->
+    <div class="form-row">
+
+      <!--Presidente-->
+      <div class="form-field">
+        <label class="form-label">ID do Presidente</label>
+        <input class="form-input" type="number" formControlName="presidente" placeholder="Ex: 2" />
+      </div>
+
+      <!--Primeiro membro-->
+      <div class="form-field">
+        <label class="form-label">ID do Primeiro Membro</label>
+        <input class="form-input" type="number" formControlName="primeiro_membro" placeholder="Ex: 3" />
+      </div>
+
+      <!--Segundo membro-->
+      <div class="form-field">
+        <label class="form-label">ID do Segundo Membro</label>
+        <input class="form-input" type="number" formControlName="segundo_membro" placeholder="Ex: 4" />
       </div>
     </div>
   </div>
 
-</div>
-
-
-<!-- CARD: BANCA EXAMINADORA -->
-<div class="form-card">
-  <h2 class="form-card__title">
-    <mat-icon>groups</mat-icon>
-    Banca Examinadora
-  </h2>
-
-  <!--linha com Presidente, Primeiro membro e segundo membro-->
-  <div class="form-row">
-
-    <!--Presidente-->
-    <div class="form-field">
-      <label class="form-label">Presidente</label>
-      <input class="form-input form-input--disabled" type="text" placeholder="[Auto-preenchido pelo Orientador]"
-        disabled />
-    </div>
-
-    <!--Primeiro membro-->
-    <div class="form-field">
-      <label class="form-label">Primeiro Membro</label>
-      <input class="form-input" type="text" placeholder="Nome do Membro 1" />
-    </div>
-
-
-    <!--Segundo membro-->
-    <div class="form-field">
-      <label class="form-label">Segundo Membro</label>
-      <input class="form-input" type="text" placeholder="Nome do Membro 2" />
-    </div>
-  </div>
-</div>
+</form>
