@@ -22,10 +22,11 @@ export class TableList {
   @Input() pageSize: number = 10;
 
   @Input() windowSize: number = 1;
+  @Input() currentPage = 1;
 
   @Output() pageChange = new EventEmitter<number>();
 
-  currentPage = 1;
+  
 
    get totalPages(): number {
     return Math.max(1, Math.ceil(this.totalItems / this.pageSize));
@@ -34,6 +35,10 @@ export class TableList {
   get shownItems(): number {
     const start = (this.currentPage - 1) * this.pageSize;
     return Math.min(this.pageSize, this.totalItems - start);
+  }
+
+  get startItem(): number {
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
   }
 
   get pageItems(): PageItem[] {
@@ -67,9 +72,8 @@ export class TableList {
     return item === '...';
   }
 
-   goToPage(page: number): void {
+  goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
       this.pageChange.emit(page);
     }
   }

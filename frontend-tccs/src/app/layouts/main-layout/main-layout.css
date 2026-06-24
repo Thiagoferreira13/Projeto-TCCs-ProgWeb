@@ -1,7 +1,6 @@
 .main-content {
-    padding: calc(var(--navbar-height) + 2rem) 5% 2rem 5%;
+    padding: calc(var(--navbar-height) + 1.5rem) 5% 1.5rem 5%;
     display: flex;
     width: 100%;
     flex-direction: column;
-    gap: 2rem;
 }

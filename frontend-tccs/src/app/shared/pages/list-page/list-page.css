@@ -1,8 +1,6 @@
 .list-page {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    padding: 0;
-    background-color: #f8f9fa;
-    min-height: 100%;
+    gap: 1.5rem;
+    padding-top: 1.5rem;
 }
