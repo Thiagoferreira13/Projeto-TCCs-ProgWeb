@@ -4,6 +4,7 @@ import { PageHeader } from '../../../shared/components/page-header/page-header';
 import { TableList, TableColumn } from '../../../shared/components/table-list/table-list';
 import { ListPage } from '../../../shared/pages/list-page/list-page';
 import { ConfirmModal } from '../../../shared/components/confirm-modal/confirm-modal';
+import { FormModal, DialogField } from '../../../shared/components/form-modal/form-modal';
 
 interface Aluno {
   id: number;
@@ -14,7 +15,7 @@ interface Aluno {
 
 @Component({
   selector: 'app-alunos-list',
-  imports: [MatIconModule, PageHeader, TableList, ListPage, ConfirmModal],
+  imports: [MatIconModule, PageHeader, TableList, ListPage, ConfirmModal, FormModal],
   templateUrl: './alunos-list.html',
   styleUrl: './alunos-list.css',
 })
@@ -67,6 +68,8 @@ export class AlunosList {
     { id: 37, nome: 'Patrícia Cunha',        matricula: '2021037', curso: 'Engenharia de Redes' },
   ];
 
+  // ── Paginação ──────────────────────────────────────────────────────────────
+
   currentPage = 1;
   readonly pageSize = 10;
 
@@ -79,21 +82,56 @@ export class AlunosList {
     this.currentPage = page;
   }
 
-  editarAluno(aluno: Aluno): void {
-    console.log('Editar aluno:', aluno.id);
+  // ── Modal de cadastro / edição ─────────────────────────────────────────────
+
+  formOpen = false;
+  alunoEmEdicao: Aluno | null = null;
+
+  fields: DialogField[] = [
+    { key: 'nome',      label: 'Nome Completo', type: 'text',   placeholder: 'Ex: Maria Eduarda Santos', required: true },
+    { key: 'matricula', label: 'Matrícula',     type: 'text',   placeholder: 'Ex: 202400123',            required: true },
+    { key: 'curso',     label: 'Curso',         type: 'select', placeholder: 'Selecione um curso...',    required: true,
+      options: [
+        { value: 'Administração',          label: 'Administração' },
+        { value: 'Ciência da Computação',  label: 'Ciência da Computação' },
+        { value: 'Engenharia de Redes',    label: 'Engenharia de Redes' },
+        { value: 'Engenharia de Software', label: 'Engenharia de Software' },
+        { value: 'Sistemas de Informação', label: 'Sistemas de Informação' },
+      ]
+    },
+  ];
+
+  abrirCadastro(): void {
+    this.alunoEmEdicao = null;
+    this.formOpen = true;
   }
 
-  dialogOpen = false;
+  editarAluno(aluno: Aluno): void {
+    this.alunoEmEdicao = aluno;
+    this.formOpen = true;
+  }
+
+  onSubmit(valores: Record<string, any>): void {
+    if (this.alunoEmEdicao) {
+      console.log('Editar:', valores);
+    } else {
+      console.log('Cadastrar:', valores);
+    }
+    this.formOpen = false;
+  }
+
+  // ── Modal de confirmação de exclusão ───────────────────────────────────────
+  confirmOpen = false;
   alunoParaExcluir: Aluno | null = null;
 
   excluirAluno(aluno: Aluno): void {
     this.alunoParaExcluir = aluno;
-    this.dialogOpen = true;
+    this.confirmOpen = true;
   }
 
   onConfirmDelete(): void {
-    // lógica de exclusão com this.alunoParaExcluir
-    this.dialogOpen = false;
+    console.log('Excluir:', this.alunoParaExcluir?.id);
+    this.confirmOpen = false;
     this.alunoParaExcluir = null;
   }
 }

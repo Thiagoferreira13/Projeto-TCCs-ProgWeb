@@ -4,7 +4,8 @@
     pageTitle="Listagem de Professores"
     subtitle="Gerencie e acompanhe os professores cadastrados no sistema."
     buttonText="Novo Professor"
-    buttonIcon="add">
+    buttonIcon="add"
+    (buttonClick)="abrirCadastro()">
   </app-page-header>
 
   <app-table-list
@@ -28,15 +29,26 @@
 
   </app-table-list>
 
+  <app-form-modal
+    [open]="formOpen"
+    [title]="professorEmEdicao ? 'Editar Professor' : 'Novo Professor'"
+    [titleIcon]="professorEmEdicao ? 'edit' : 'person_add'"
+    [submitLabel]="professorEmEdicao ? 'Salvar' : 'Cadastrar'"
+    [fields]="fields"
+    [initialValue]="professorEmEdicao"
+    (submitted)="onSubmit($event)"
+    (cancelled)="formOpen = false">
+  </app-form-modal>
+
   <app-confirm-modal
-    [open]="dialogOpen"
+    [open]="confirmOpen"
     title="Excluir Professor"
     message="Tem certeza que deseja excluir este professor? Esta ação é irreversível."
     warningText="Os dados e registros vinculados a este professor podem ser afetados."
     confirmLabel="Excluir"
     [destructive]="true"
     (confirmed)="onConfirmDelete()"
-    (cancelled)="dialogOpen = false">
+    (cancelled)="confirmOpen = false">
   </app-confirm-modal>
 
 </app-list-page>

@@ -4,7 +4,8 @@
     pageTitle="Listagem de Alunos"
     subtitle="Gerencie e acompanhe os alunos cadastrados no sistema."
     buttonText="Novo Aluno"
-    buttonIcon="add">
+    buttonIcon="add"
+    (buttonClick)="abrirCadastro()">
   </app-page-header>
 
   <app-table-list
@@ -29,15 +30,26 @@
 
   </app-table-list>
 
+  <app-form-modal
+    [open]="formOpen"
+    [title]="alunoEmEdicao ? 'Editar Aluno' : 'Novo Aluno'"
+    [titleIcon]="alunoEmEdicao ? 'edit' : 'person_add'"
+    [submitLabel]="alunoEmEdicao ? 'Salvar' : 'Cadastrar'"
+    [fields]="fields"
+    [initialValue]="alunoEmEdicao"
+    (submitted)="onSubmit($event)"
+    (cancelled)="formOpen = false">
+  </app-form-modal>
+
   <app-confirm-modal
-    [open]="dialogOpen"
+    [open]="confirmOpen"
     title="Excluir Aluno"
     message="Tem certeza que deseja excluir este aluno? Esta ação é irreversível."
     warningText="Os TCCs vinculados a este aluno serão arquivados automaticamente."
     confirmLabel="Excluir"
     [destructive]="true"
     (confirmed)="onConfirmDelete()"
-    (cancelled)="dialogOpen = false">
+    (cancelled)="confirmOpen = false">
   </app-confirm-modal>
 
 </app-list-page>
