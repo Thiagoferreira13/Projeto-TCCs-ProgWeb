@@ -129,9 +129,6 @@
   letter-spacing: 0.05em;
 }
 
-.table-header__col:nth-last-child(2) {
-  transform: translateX(10px);
-}
 
 .table-header__col:last-child {
   padding-left: 20px;
@@ -315,6 +312,18 @@
 .page-btn mat-icon {
   font-size: 18px;
 }
+
+.state-message {
+  padding: 40px 24px;
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.state-message--error {
+  color: #dc2626;
+}
+
 
 /* ===== RESPONSIVIDADE ===== */
 
