@@ -69,10 +69,6 @@ export class AlunosList {
   currentPage = 1;
   readonly pageSize = 10;
 
-  get totalPages(): number {
-    return Math.max(1, Math.ceil(this.alunos.length / this.pageSize));
-  }
-
   get paginatedAlunos(): Aluno[] {
     const start = (this.currentPage - 1) * this.pageSize;
     return this.alunos.slice(start, start + this.pageSize);

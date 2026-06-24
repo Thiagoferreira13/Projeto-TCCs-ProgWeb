@@ -67,10 +67,6 @@ export class ProfessoresList {
   currentPage = 1;
   readonly pageSize = 10;
 
-  get totalPages(): number {
-    return Math.max(1, Math.ceil(this.professores.length / this.pageSize));
-  }
-
   get paginatedProfessores(): Professor[] {
     const start = (this.currentPage - 1) * this.pageSize;
     return this.professores.slice(start, start + this.pageSize);

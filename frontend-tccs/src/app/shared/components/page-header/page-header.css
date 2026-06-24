@@ -47,6 +47,14 @@
         gap: 1rem;
     }
 
+    .page-header-title {
+        font-size: 1.3125rem;
+    }
+
+    .page-header-subtitle {
+        font-size: 0.875rem;
+    }
+
     .btn-primary {
         width: 100%;
         justify-content: center;

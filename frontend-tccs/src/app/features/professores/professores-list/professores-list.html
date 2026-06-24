@@ -10,9 +10,7 @@
   <app-table-list
     [columns]="columns"
     [totalItems]="professores.length"
-    [shownItems]="paginatedProfessores.length"
-    [currentPage]="currentPage"
-    [totalPages]="totalPages"
+    [pageSize]="pageSize"
     (pageChange)="onPageChange($event)">
 
     @for (professor of paginatedProfessores; track professor.id) {
