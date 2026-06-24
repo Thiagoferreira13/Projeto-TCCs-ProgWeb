@@ -2,6 +2,7 @@
 /* ===== CLASSES REUTILIZÁVEIS DE FORM ====== */
 /* Usadas tanto na tela de criar quanto editar */
 /* =========================================== */
+
 form {
   display: flex;
   flex-direction: column;
@@ -91,6 +92,15 @@ form {
   cursor: not-allowed;
 }
 
+.form-input:disabled,
+.form-textarea:disabled {
+  opacity: 1;
+  background-color: white;
+  color: #374151;
+  cursor: default;
+  -webkit-text-fill-color: #374151;
+}
+
 .form-textarea {
   resize: vertical;
   min-height: 90px;
@@ -98,6 +108,24 @@ form {
 
 .form-select {
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23374151' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.form-select:disabled {
+  cursor: default;
+  opacity: 1;
+  background-color: white;
+  color: #374151;
+  -webkit-text-fill-color: #374151;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 /* Input com ícone de busca (usado em "Pesquisar Aluno") */
@@ -171,7 +199,8 @@ form {
   color: #9ca3af;
 }
 
-
+/* O espaçamento entre cards/grids agora é controlado
+   pelo "gap" do <form> (ver topo do arquivo) */
 
 /* ===== RESPONSIVIDADE ===== */
 @media (max-width: 900px) {
