@@ -1,0 +1,16 @@
+<header class="page-header-container">
+    <div class="page-header-info">
+        <h1 class="page-header-title">
+            {{ pageTitle }}
+        </h1>
+
+        <p class="page-header-subtitle">
+            {{ subtitle }}
+        </p>
+    </div>
+
+    <button class="btn-primary" (click)="buttonClick.emit()">
+        <mat-icon>{{ buttonIcon }}</mat-icon>
+        {{ buttonText }}
+    </button>
+</header>

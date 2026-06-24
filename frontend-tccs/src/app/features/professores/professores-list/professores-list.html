@@ -1,0 +1,54 @@
+<app-list-page>
+
+  <app-page-header
+    pageTitle="Listagem de Professores"
+    subtitle="Gerencie e acompanhe os professores cadastrados no sistema."
+    buttonText="Novo Professor"
+    buttonIcon="add"
+    (buttonClick)="abrirCadastro()">
+  </app-page-header>
+
+  <app-table-list
+    [columns]="columns"
+    [totalItems]="professores.length"
+    [pageSize]="pageSize"
+    (pageChange)="onPageChange($event)">
+
+    @for (professor of paginatedProfessores; track professor.id) {
+      <tr table-body>
+        <td>{{ professor.nome }}</td>
+        <td>{{ professor.departamento }}</td>
+        <td>
+          <div class="col-actions">
+            <mat-icon class="action-icon" (click)="editarProfessor(professor)">edit</mat-icon>
+            <mat-icon class="action-icon action-icon--delete" (click)="excluirProfessor(professor)">delete</mat-icon>
+          </div>
+        </td>
+      </tr>
+    }
+
+  </app-table-list>
+
+  <app-form-modal
+    [open]="formOpen"
+    [title]="professorEmEdicao ? 'Editar Professor' : 'Novo Professor'"
+    [titleIcon]="professorEmEdicao ? 'edit' : 'person_add'"
+    [submitLabel]="professorEmEdicao ? 'Salvar' : 'Cadastrar'"
+    [fields]="fields"
+    [initialValue]="professorEmEdicao"
+    (submitted)="onSubmit($event)"
+    (cancelled)="formOpen = false">
+  </app-form-modal>
+
+  <app-confirm-modal
+    [open]="confirmOpen"
+    title="Excluir Professor"
+    message="Tem certeza que deseja excluir este professor? Esta ação é irreversível."
+    warningText="Os dados e registros vinculados a este professor podem ser afetados."
+    confirmLabel="Excluir"
+    [destructive]="true"
+    (confirmed)="onConfirmDelete()"
+    (cancelled)="confirmOpen = false">
+  </app-confirm-modal>
+
+</app-list-page>

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Tccs } from './tccs';
+import { AlunosList } from './alunos-list';
 
-describe('Tccs', () => {
-  let component: Tccs;
-  let fixture: ComponentFixture<Tccs>;
+describe('AlunosList', () => {
+  let component: AlunosList;
+  let fixture: ComponentFixture<AlunosList>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Tccs],
+      imports: [AlunosList],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Tccs);
+    fixture = TestBed.createComponent(AlunosList);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -1,0 +1,30 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="page-header__info">
+      <h1 class="page-header__title">Novo Registro de TCC</h1>
+      <p class="page-header__subtitle">
+        Preencha os campos abaixo para cadastrar um novo trabalho de conclusão de curso.
+      </p>
+    </div>
+  </div>
+
+  <!-- FORMULÁRIO (componente reutilizável) -->
+  <app-tcc-form></app-tcc-form>
+
+  <!-- AÇÕES -->
+  <div class="form-actions">
+    <button class="btn-text" (click)="cancelar()">Cancelar</button>
+    <button class="btn-primary" (click)="salvar()">
+      <mat-icon>save</mat-icon>
+      Salvar TCC
+    </button>
+  </div>
+
+  <!--Footer da página-->
+  <div class="page-footer">
+    © 2024 Universidade Federal - Sistema de Gestão de TCC
+  </div>
+
+</div>
