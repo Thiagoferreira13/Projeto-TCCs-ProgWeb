@@ -1,4 +1,5 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { TccDeleteModal, TccResumo } from '../tcc-delete-modal/tcc-delete-modal';
 import { TccService } from '../tcc.service';
@@ -6,18 +7,23 @@ import { Tcc } from '../tcc.model';
 
 const ITENS_POR_PAGINA = 10;
 
+// Valores internos que o backend usa no campo `status`
+const STATUS_OPTIONS = [
+  { valor: '', label: 'Todos os Status' },
+  { valor: '0', label: 'Em Elaboração' },
+  { valor: '1', label: 'Enviado' },
+  { valor: '2', label: 'Aprovado' },
+  { valor: '3', label: 'Reprovado' },
+];
+
 @Component({
   selector: 'app-tccs',
-  imports: [MatIconModule, TccDeleteModal],
+  imports: [MatIconModule, TccDeleteModal, FormsModule],
   templateUrl: './tccs-list.html',
   styleUrls: ['./tccs-list.css', '../tccs-shared.css'],
 })
 export class Tccs implements OnInit {
   // ===== SIGNALS =====
-  // Em projetos Zoneless (sem zone.js), atribuições comuns
-  // (this.todosTccs = dados) não disparam a re-renderização da tela.
-  // Signals resolvem isso: o Angular sabe exatamente quando o valor
-  // muda e atualiza o template automaticamente.
 
   todosTccs = signal<Tcc[]>([]);
   carregando = signal(false);
@@ -26,23 +32,35 @@ export class Tccs implements OnInit {
 
   tccParaExcluir = signal<TccResumo | null>(null);
 
-  // ===== COMPUTED (derivados dos signals acima) =====
+  // Filtros
+  termoBusca = signal('');
+  statusFiltro = signal('');
+
+  // Expõe as opções de status para o template
+  readonly statusOptions = STATUS_OPTIONS;
+
+  // ===== COMPUTED =====
+
+  // Filtragem client-side por status (a busca por texto vai ao backend)
+  tccsFiltrados = computed(() => {
+    const status = this.statusFiltro();
+    if (!status) return this.todosTccs();
+    return this.todosTccs().filter((t) => t.status === status);
+  });
 
   totalPaginas = computed(() =>
-    Math.max(1, Math.ceil(this.todosTccs().length / ITENS_POR_PAGINA))
+    Math.max(1, Math.ceil(this.tccsFiltrados().length / ITENS_POR_PAGINA))
   );
 
   tccsDaPagina = computed(() => {
     const inicio = (this.paginaAtual() - 1) * ITENS_POR_PAGINA;
-    return this.todosTccs().slice(inicio, inicio + ITENS_POR_PAGINA);
+    return this.tccsFiltrados().slice(inicio, inicio + ITENS_POR_PAGINA);
   });
 
-  // Mostra só um intervalo pequeno de páginas ao redor da atual
-  // (ex: na página 5, mostra 4, 5, 6 — não as 25 inteiras)
   paginas = computed(() => {
     const atual = this.paginaAtual();
     const total = this.totalPaginas();
-    const intervalo = 1; // quantas páginas mostrar de cada lado da atual
+    const intervalo = 1;
 
     const inicio = Math.max(1, atual - intervalo);
     const fim = Math.min(total, atual + intervalo);
@@ -56,11 +74,11 @@ export class Tccs implements OnInit {
     this.carregarTccs();
   }
 
-  carregarTccs() {
+  carregarTccs(search = '') {
     this.carregando.set(true);
     this.erro.set(null);
 
-    this.tccService.listar().subscribe({
+    this.tccService.listar(search).subscribe({
       next: (dados) => {
         this.todosTccs.set(dados);
         this.carregando.set(false);
@@ -71,6 +89,23 @@ export class Tccs implements OnInit {
         this.carregando.set(false);
       },
     });
+  }
+
+  // ===== FILTROS =====
+
+  onBuscaChange(termo: string) {
+    this.termoBusca.set(termo);
+    this.paginaAtual.set(1);
+    // Debounce simples: aguarda 400ms antes de ir ao backend
+    clearTimeout((this as any)._buscaTimeout);
+    (this as any)._buscaTimeout = setTimeout(() => {
+      this.carregarTccs(termo.trim());
+    }, 400);
+  }
+
+  onStatusChange(status: string) {
+    this.statusFiltro.set(status);
+    this.paginaAtual.set(1);
   }
 
   // ===== PAGINAÇÃO =====
@@ -101,7 +136,7 @@ export class Tccs implements OnInit {
     this.tccParaExcluir.set({
       id: String(tcc.id),
       titulo: tcc.titulo,
-      aluno: `Aluno #${tcc.aluno}`, // sem service de Aluno, só temos o ID
+      aluno: `Aluno #${tcc.aluno}`,
       status: tcc.status_display,
     });
   }

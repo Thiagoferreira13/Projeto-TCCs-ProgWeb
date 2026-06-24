@@ -14,25 +14,30 @@
   </div>
 
   <!--Barra com pesquisa e filtros-->
+  <!-- Barra com pesquisa e filtros -->
   <div class="search-bar">
+
     <div class="search-bar__input-wrapper">
       <mat-icon class="search-bar__icon">search</mat-icon>
-      <input class="search-bar__input" type="text" placeholder="Buscar por título, aluno ou orientador..." />
+
+      <input class="search-bar__input" type="text" placeholder="Buscar por título ou resumo..." [ngModel]="termoBusca()"
+        (ngModelChange)="onBuscaChange($event)" />
     </div>
 
     <div class="search-bar__filters">
       <span class="search-bar__label">Filtrar por Status:</span>
-      <select class="search-bar__select">
-        <option>Todos os Status</option>
-        <option>Aprovado</option>
-        <option>Em Elaboração</option>
-        <option>Enviado</option>
-        <option>Reprovado</option>
-      </select>
-      <button class="btn-outline">
-        <mat-icon>tune</mat-icon> Filtros Avançados
-      </button>
+
+      <div class="search-bar__select-wrapper">
+        <select class="search-bar__select" [ngModel]="statusFiltro()" (ngModelChange)="onStatusChange($event)">
+          @for (opt of statusOptions; track opt.valor) {
+          <option [value]="opt.valor">
+            {{ opt.label }}
+          </option>
+          }
+        </select>
+      </div>
     </div>
+
   </div>
 
   <!--Estado de carregamento-->
@@ -57,11 +62,11 @@
     <div class="table-scroll">
       <div class="table-header">
         <span class="table-header__col col-title">Título</span>
+        <span class="table-header__col col-resumo">Resumo</span>
         <span class="table-header__col col-student">Aluno</span>
         <span class="table-header__col col-advisor">Orientador</span>
         <span class="table-header__col col-type">Tipo / Semestre</span>
         <span class="table-header__col col-status">Status</span>
-        <span class="table-header__col col-file">Arquivo</span>
         <span class="table-header__col col-actions">Ações</span>
       </div>
 
@@ -72,6 +77,10 @@
         <div class="table-row__col col-title">
           <span class="tcc-title">{{ tcc.titulo }}</span>
           <span class="tcc-id">ID: {{ tcc.id }}</span>
+        </div>
+        <!--Resumo truncado-->
+        <div class="table-row__col col-resumo">
+          <span class="tcc-resumo">{{ tcc.resumo }}</span>
         </div>
         <!--Aluno (só temos o ID, sem service de Aluno)-->
         <div class="table-row__col col-student">
@@ -92,27 +101,10 @@
             {{ tcc.status_display }}
           </span>
         </div>
-        <!--Arquivo-->
-        <div class="table-row__col col-file">
-          @if (tcc.arquivo) {
-          <a [href]="tcc.arquivo" target="_blank" class="file-icon file-icon--pdf">
-            <mat-icon>picture_as_pdf</mat-icon>
-          </a>
-          <a [href]="tcc.arquivo" target="_blank" class="file-icon file-icon--view">
-            <mat-icon>visibility</mat-icon>
-          </a>
-          <a [href]="tcc.arquivo" download class="file-icon file-icon--download">
-            <mat-icon>download</mat-icon>
-          </a>
-          } @else {
-          <span class="no-file">Pendente</span>
-          }
-        </div>
-
         <!--Ações-->
         <div class="table-row__col col-actions">
           <mat-icon class="action-icon action-icon--edit">edit</mat-icon>
-          <mat-icon class="action-icon action-icon--transfer">swap_horiz</mat-icon>
+          <mat-icon class="action-icon action-icon--view">visibility</mat-icon>
           <mat-icon class="action-icon action-icon--delete" (click)="abrirModalExclusao(tcc)">delete</mat-icon>
         </div>
       </div>
