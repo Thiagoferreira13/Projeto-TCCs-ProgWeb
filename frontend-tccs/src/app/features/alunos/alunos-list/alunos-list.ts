@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { PageHeader } from '../../../shared/components/page-header/page-header';
 import { TableList, TableColumn } from '../../../shared/components/table-list/table-list';
@@ -6,12 +6,15 @@ import { ListPage } from '../../../shared/pages/list-page/list-page';
 import { ConfirmModal } from '../../../shared/components/confirm-modal/confirm-modal';
 import { FormModal, DialogField } from '../../../shared/components/form-modal/form-modal';
 import { SearchBar } from '../../../shared/components/search-bar/search-bar';
+import { Aluno } from '../../../core/models/aluno.model';
+import { AlunoService } from '../../../core/service/aluno.service';
+import { CursoService } from '../../../core/service/curso.service';
 
-interface Aluno {
-  id: number;
+// Tipo para os valores iniciais do formulário
+interface FormInitialValue {
   nome: string;
   matricula: string;
-  curso: string;
+  curso: string;  // ID do curso como string
 }
 
 @Component({
@@ -20,7 +23,11 @@ interface Aluno {
   templateUrl: './alunos-list.html',
   styleUrl: './alunos-list.css',
 })
-export class AlunosList {
+export class AlunosList implements OnInit {
+
+  private alunoService = inject(AlunoService);
+  private cursoService = inject(CursoService);
+  private cdr = inject(ChangeDetectorRef);
 
   columns: TableColumn[] = [
     { key: 'nome',      label: 'Nome',      minWidth: '220px' },
@@ -29,45 +36,68 @@ export class AlunosList {
     { key: 'acoes',     label: 'Ações',     minWidth: '80px'  },
   ];
 
-  alunos: Aluno[] = [
-    { id: 1,  nome: 'Ana Paula Silva',       matricula: '2021001', curso: 'Ciência da Computação' },
-    { id: 2,  nome: 'Bruno Oliveira Santos', matricula: '2021002', curso: 'Engenharia de Redes' },
-    { id: 3,  nome: 'Carla Ferreira',        matricula: '2020003', curso: 'Administração' },
-    { id: 4,  nome: 'Daniel Rocha',          matricula: '2020004', curso: 'Sistemas de Informação' },
-    { id: 5,  nome: 'Eduarda Martins',       matricula: '2022005', curso: 'Ciência da Computação' },
-    { id: 6,  nome: 'Felipe Souza',          matricula: '2022006', curso: 'Engenharia de Software' },
-    { id: 7,  nome: 'Gabriela Nunes',        matricula: '2021007', curso: 'Sistemas de Informação' },
-    { id: 8,  nome: 'Henrique Lima',         matricula: '2023008', curso: 'Administração' },
-    { id: 9,  nome: 'Isabela Costa',         matricula: '2023009', curso: 'Engenharia de Redes' },
-    { id: 10, nome: 'João Pedro Alves',      matricula: '2020010', curso: 'Ciência da Computação' },
-    { id: 11, nome: 'Karina Rodrigues',      matricula: '2022011', curso: 'Engenharia de Software' },
-    { id: 12, nome: 'Lucas Pereira',         matricula: '2021012', curso: 'Sistemas de Informação' },
-    { id: 13, nome: 'Mariana Carvalho',      matricula: '2021013', curso: 'Ciência da Computação' },
-    { id: 14, nome: 'Nicolas Mendes',        matricula: '2022014', curso: 'Engenharia de Redes' },
-    { id: 15, nome: 'Olívia Ribeiro',        matricula: '2020015', curso: 'Administração' },
-    { id: 16, nome: 'Pedro Henrique Dias',   matricula: '2023016', curso: 'Sistemas de Informação' },
-    { id: 17, nome: 'Quésia Fernandes',      matricula: '2021017', curso: 'Ciência da Computação' },
-    { id: 18, nome: 'Rafael Gomes',          matricula: '2022018', curso: 'Engenharia de Software' },
-    { id: 19, nome: 'Sabrina Almeida',       matricula: '2020019', curso: 'Administração' },
-    { id: 20, nome: 'Thiago Barbosa',        matricula: '2023020', curso: 'Engenharia de Redes' },
-    { id: 21, nome: 'Ursula Teixeira',       matricula: '2021021', curso: 'Ciência da Computação' },
-    { id: 22, nome: 'Vinícius Moreira',      matricula: '2022022', curso: 'Sistemas de Informação' },
-    { id: 23, nome: 'Wesley Cardoso',        matricula: '2020023', curso: 'Engenharia de Software' },
-    { id: 24, nome: 'Yasmin Lopes',          matricula: '2023024', curso: 'Administração' },
-    { id: 25, nome: 'Amanda Vieira',         matricula: '2021025', curso: 'Ciência da Computação' },
-    { id: 26, nome: 'Caio Batista',          matricula: '2022026', curso: 'Engenharia de Redes' },
-    { id: 27, nome: 'Débora Castro',         matricula: '2020027', curso: 'Sistemas de Informação' },
-    { id: 28, nome: 'Erick Moraes',          matricula: '2023028', curso: 'Engenharia de Software' },
-    { id: 29, nome: 'Fernanda Azevedo',      matricula: '2021029', curso: 'Administração' },
-    { id: 30, nome: 'Gustavo Freitas',       matricula: '2022030', curso: 'Ciência da Computação' },
-    { id: 31, nome: 'Helena Duarte',         matricula: '2020031', curso: 'Sistemas de Informação' },
-    { id: 32, nome: 'Igor Tavares',          matricula: '2023032', curso: 'Engenharia de Redes' },
-    { id: 33, nome: 'Juliana Melo',          matricula: '2021033', curso: 'Engenharia de Software' },
-    { id: 34, nome: 'Leonardo Faria',        matricula: '2022034', curso: 'Ciência da Computação' },
-    { id: 35, nome: 'Monique Rezende',       matricula: '2020035', curso: 'Administração' },
-    { id: 36, nome: 'Nathan Oliveira',       matricula: '2023036', curso: 'Sistemas de Informação' },
-    { id: 37, nome: 'Patrícia Cunha',        matricula: '2021037', curso: 'Engenharia de Redes' },
+  alunos: Aluno[] = [];
+  cursoOptions: { value: string; label: string }[] = [];
+
+  fields: DialogField[] = [
+    { key: 'nome',      label: 'Nome Completo', type: 'text',   placeholder: 'Ex: Maria Eduarda Santos', required: true },
+    { key: 'matricula', label: 'Matrícula',     type: 'text',   placeholder: 'Ex: 202400123',            required: true },
+    { key: 'curso',     label: 'Curso',         type: 'select', placeholder: 'Selecione um curso...',    required: true,
+      options: []  // Será preenchido dinamicamente
+    },
   ];
+
+  initialValue: FormInitialValue | null = null;
+
+  ngOnInit(): void {
+    this.carregarCursos();
+    this.carregarAlunos();
+  }
+
+  carregarCursos(): void {
+    this.cursoService.listar().subscribe({
+      next: (cursos) => {
+        this.cursoOptions = cursos.map(c => ({
+          value: String(c.id),
+          label: c.nome
+        }));
+        const campo = this.fields.find(f => f.key === 'curso');
+        if (campo) {
+          campo.options = this.cursoOptions;
+        }
+        this.cdr.detectChanges();
+      },
+      error: (erro) => console.error('Erro ao carregar cursos', erro)
+    });
+  }
+
+  carregarAlunos(): void {
+    this.alunoService.listar().subscribe({
+      next: (alunos) => {
+        this.alunos = alunos;
+
+        const totalPages = Math.max(
+          1,
+          Math.ceil(this.alunos.length / this.pageSize)
+        );
+
+        if (this.currentPage > totalPages) {
+          this.currentPage = totalPages;
+        }
+
+        this.cdr.detectChanges();
+      },
+      error: (erro) => console.error('Erro ao carregar alunos', erro)
+    });
+  }
+
+  getNomeCurso(curso: number | string | { id: number; nome: string }): string {
+    if (typeof curso === 'object' && curso !== null) {
+      return curso.nome;
+    }
+    const found = this.cursoOptions.find(c => c.value === String(curso));
+    return found?.label ?? String(curso);
+  }
 
   // ── Paginação ──────────────────────────────────────────────────────────────
 
@@ -83,11 +113,21 @@ export class AlunosList {
     this.currentPage = page;
   }
 
-
   // ── Search bar ─────────────────────────────────────────────────────────────
 
   onSearch(query: string): void {
-    console.log('Buscar:', query);
+    this.currentPage = 1;
+    if (!query.trim()) {
+      this.carregarAlunos();
+      return;
+    }
+    this.alunoService.pesquisar(query).subscribe({
+      next: alunos => {
+        this.alunos = alunos;
+        this.cdr.detectChanges();
+      },
+      error: erro => console.error('Erro na pesquisa', erro)
+    });
   }
 
   // ── Modal de cadastro / edição ─────────────────────────────────────────────
@@ -95,37 +135,62 @@ export class AlunosList {
   formOpen = false;
   alunoEmEdicao: Aluno | null = null;
 
-  fields: DialogField[] = [
-    { key: 'nome',      label: 'Nome Completo', type: 'text',   placeholder: 'Ex: Maria Eduarda Santos', required: true },
-    { key: 'matricula', label: 'Matrícula',     type: 'text',   placeholder: 'Ex: 202400123',            required: true },
-    { key: 'curso',     label: 'Curso',         type: 'select', placeholder: 'Selecione um curso...',    required: true,
-      options: [
-        { value: 'Administração',          label: 'Administração' },
-        { value: 'Ciência da Computação',  label: 'Ciência da Computação' },
-        { value: 'Engenharia de Redes',    label: 'Engenharia de Redes' },
-        { value: 'Engenharia de Software', label: 'Engenharia de Software' },
-        { value: 'Sistemas de Informação', label: 'Sistemas de Informação' },
-      ]
-    },
-  ];
-
   abrirCadastro(): void {
     this.alunoEmEdicao = null;
+    this.initialValue = { nome: '', matricula: '', curso: '' };
     this.formOpen = true;
   }
 
   editarAluno(aluno: Aluno): void {
+    let cursoStr: string;
+    if (typeof aluno.curso === 'object' && aluno.curso !== null) {
+      cursoStr = String(aluno.curso.id);
+    } else {
+      cursoStr = String(aluno.curso);
+    }
+    this.initialValue = {
+      nome: aluno.nome,
+      matricula: aluno.matricula,
+      curso: cursoStr
+    };
     this.alunoEmEdicao = aluno;
     this.formOpen = true;
   }
 
   onSubmit(valores: Record<string, any>): void {
+    const dados = {
+      nome: valores['nome'],
+      matricula: valores['matricula'],
+      curso: Number(valores['curso'])
+    };
+
     if (this.alunoEmEdicao) {
-      console.log('Editar:', valores);
+      const id = this.alunoEmEdicao.id!;
+      this.alunoService.editar(id, dados).subscribe({
+        next: () => {
+          this.formOpen = false;
+          this.alunoEmEdicao = null;
+          this.initialValue = null;
+          this.carregarAlunos();
+        },
+        error: (erro) => {
+          console.error('Erro ao editar aluno', erro);
+          if (erro.error) console.error('Detalhes:', erro.error);
+        }
+      });
     } else {
-      console.log('Cadastrar:', valores);
+      this.alunoService.criar(dados).subscribe({
+        next: () => {
+          this.formOpen = false;
+          this.initialValue = null;
+          this.carregarAlunos();
+        },
+        error: (erro) => {
+          console.error('Erro ao cadastrar aluno', erro);
+          if (erro.error) console.error('Detalhes:', erro.error);
+        }
+      });
     }
-    this.formOpen = false;
   }
 
   // ── Modal de confirmação de exclusão ───────────────────────────────────────
@@ -138,8 +203,18 @@ export class AlunosList {
   }
 
   onConfirmDelete(): void {
-    console.log('Excluir:', this.alunoParaExcluir?.id);
-    this.confirmOpen = false;
-    this.alunoParaExcluir = null;
+    if (!this.alunoParaExcluir) return;
+    const id = this.alunoParaExcluir.id!;
+    this.alunoService.excluir(id).subscribe({
+      next: () => {
+        this.confirmOpen = false;
+        this.alunoParaExcluir = null;
+        this.carregarAlunos();
+      },
+      error: (erro) => {
+        console.error('Erro ao excluir aluno', erro);
+        if (erro.error) console.error('Detalhes:', erro.error);
+      }
+    });
   }
 }

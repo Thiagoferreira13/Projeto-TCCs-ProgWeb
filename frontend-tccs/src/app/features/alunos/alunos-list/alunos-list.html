@@ -9,7 +9,7 @@
   </app-page-header>
 
   <app-search-bar
-    placeholder="Buscar por nome ou ou matrícula..."
+    placeholder="Buscar por nome ou matrícula..."
     (search)="onSearch($event)">
   </app-search-bar>
 
@@ -17,13 +17,14 @@
     [columns]="columns"
     [totalItems]="alunos.length"
     [pageSize]="pageSize"
+    [currentPage]="currentPage"
     (pageChange)="onPageChange($event)">
 
     @for (aluno of paginatedAlunos; track aluno.id) {
       <tr table-body>
         <td>{{ aluno.nome }}</td>
         <td>{{ aluno.matricula }}</td>
-        <td>{{ aluno.curso }}</td>
+        <td>{{ getNomeCurso(aluno.curso) }}</td>
         <td>
           <div class="col-actions">
             <mat-icon class="action-icon" (click)="editarAluno(aluno)">edit</mat-icon>
@@ -43,7 +44,7 @@
   [titleIcon]="alunoEmEdicao ? 'edit' : 'person_add'"
   [submitLabel]="alunoEmEdicao ? 'Salvar' : 'Cadastrar'"
   [fields]="fields"
-  [initialValue]="alunoEmEdicao"
+  [initialValue]="initialValue"
   (submitted)="onSubmit($event)"
   (cancelled)="formOpen = false">
 </app-form-modal>
