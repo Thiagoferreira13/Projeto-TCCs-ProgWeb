@@ -5,6 +5,7 @@ import { TableList, TableColumn } from '../../../shared/components/table-list/ta
 import { ListPage } from '../../../shared/pages/list-page/list-page';
 import { ConfirmModal } from '../../../shared/components/confirm-modal/confirm-modal';
 import { FormModal, DialogField } from '../../../shared/components/form-modal/form-modal';
+import { SearchBar } from '../../../shared/components/search-bar/search-bar';
 
 interface Aluno {
   id: number;
@@ -15,7 +16,7 @@ interface Aluno {
 
 @Component({
   selector: 'app-alunos-list',
-  imports: [MatIconModule, PageHeader, TableList, ListPage, ConfirmModal, FormModal],
+  imports: [MatIconModule, PageHeader, TableList, ListPage, ConfirmModal, FormModal, SearchBar],
   templateUrl: './alunos-list.html',
   styleUrl: './alunos-list.css',
 })
@@ -80,6 +81,13 @@ export class AlunosList {
 
   onPageChange(page: number): void {
     this.currentPage = page;
+  }
+
+
+  // ── Search bar ─────────────────────────────────────────────────────────────
+
+  onSearch(query: string): void {
+    console.log('Buscar:', query);
   }
 
   // ── Modal de cadastro / edição ─────────────────────────────────────────────
