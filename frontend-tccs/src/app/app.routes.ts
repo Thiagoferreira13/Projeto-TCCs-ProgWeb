@@ -2,14 +2,14 @@ import { Routes } from '@angular/router';
 
 import { Dashboard } from './features/dashboard/dashboard';
 import { MainLayout } from './layouts/main-layout/main-layout';
-import { Alunos } from './features/alunos/alunos';
 import { Cursos } from './features/cursos/cursos';
 import { Departamentos } from './features/departamentos/departamentos';
-import { Professores } from './features/professores/professores';
 import { Tccs } from './features/tccs/tccs-list/tccs-list';
 import { TccCreate } from './features/tccs/tcc-create/tcc-create';
 import { TccEdit } from './features/tccs/tcc-edit/tcc-edit';
 import { UnidadesAcademicas } from './features/unidades-academicas/unidades-academicas';
+import { AlunosList } from './features/alunos/alunos-list/alunos-list';
+import { ProfessoresList } from './features/professores/professores-list/professores-list';
 
 export const routes: Routes = [
     {
@@ -22,7 +22,7 @@ export const routes: Routes = [
             },
             {
                 path: "alunos",
-                component: Alunos
+                component: AlunosList
             },
             {
                 path: "cursos",
@@ -34,7 +34,7 @@ export const routes: Routes = [
             },
             {
                 path: "professores",
-                component: Professores
+                component: ProfessoresList
             },
             {
                 path: "tccs",

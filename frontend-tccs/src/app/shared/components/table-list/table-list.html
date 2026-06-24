@@ -1,0 +1,47 @@
+<div class="table-wrapper">
+  <div class="table-scroll">
+    <table class="data-table">
+      <thead>
+        <tr class="table-header-row">
+          @for (column of columns; track column.key) {
+            <th class="table-header__col" [style.minWidth]="column.minWidth">
+              {{ column.label }}
+            </th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        <ng-content select="[table-body]"></ng-content>
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="table-footer">
+    <span class="table-footer__info">
+      Mostrando {{ shownItems }} de {{ totalItems }} resultados
+    </span>
+
+    <div class="table-footer__pages">
+      <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      @for (item of pageItems; track $index) {
+        @if (isEllipsis(item)) {
+          <span class="page-ellipsis">…</span>
+        } @else {
+          <button
+            class="page-btn"
+            [class.page-btn--active]="item === currentPage"
+            (click)="goToPage(item)">
+            {{ item }}
+          </button>
+        }
+      }
+
+      <button class="page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </footer>
+</div>

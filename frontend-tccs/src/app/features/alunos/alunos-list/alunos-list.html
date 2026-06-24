@@ -1,0 +1,34 @@
+<app-list-page>
+
+  <app-page-header
+    pageTitle="Listagem de Alunos"
+    subtitle="Gerencie e acompanhe os alunos cadastrados no sistema."
+    buttonText="Novo Aluno"
+    buttonIcon="add">
+  </app-page-header>
+
+  <app-table-list
+    [columns]="columns"
+    [totalItems]="alunos.length"
+    [shownItems]="paginatedAlunos.length"
+    [currentPage]="currentPage"
+    [totalPages]="totalPages"
+    (pageChange)="onPageChange($event)">
+
+    @for (aluno of paginatedAlunos; track aluno.id) {
+      <tr table-body>
+        <td>{{ aluno.nome }}</td>
+        <td>{{ aluno.matricula }}</td>
+        <td>{{ aluno.curso }}</td>
+        <td>
+          <div class="col-actions">
+            <mat-icon class="action-icon" (click)="editarAluno(aluno)">edit</mat-icon>
+            <mat-icon class="action-icon action-icon--delete" (click)="excluirAluno(aluno)">delete</mat-icon>
+          </div>
+        </td>
+      </tr>
+    }
+
+  </app-table-list>
+
+</app-list-page>

@@ -1,0 +1,33 @@
+<app-list-page>
+
+  <app-page-header
+    pageTitle="Listagem de Professores"
+    subtitle="Gerencie e acompanhe os professores cadastrados no sistema."
+    buttonText="Novo Professor"
+    buttonIcon="add">
+  </app-page-header>
+
+  <app-table-list
+    [columns]="columns"
+    [totalItems]="professores.length"
+    [shownItems]="paginatedProfessores.length"
+    [currentPage]="currentPage"
+    [totalPages]="totalPages"
+    (pageChange)="onPageChange($event)">
+
+    @for (professor of paginatedProfessores; track professor.id) {
+      <tr table-body>
+        <td>{{ professor.nome }}</td>
+        <td>{{ professor.departamento }}</td>
+        <td>
+          <div class="col-actions">
+            <mat-icon class="action-icon" (click)="editarProfessor(professor)">edit</mat-icon>
+            <mat-icon class="action-icon action-icon--delete" (click)="excluirProfessor(professor)">delete</mat-icon>
+          </div>
+        </td>
+      </tr>
+    }
+
+  </app-table-list>
+
+</app-list-page>
