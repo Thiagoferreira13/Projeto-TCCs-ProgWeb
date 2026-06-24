@@ -126,6 +126,8 @@ form {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  background-image: none;
+  padding-right: 14px;
 }
 
 /* Input com ícone de busca (usado em "Pesquisar Aluno") */
