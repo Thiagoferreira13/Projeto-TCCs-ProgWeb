@@ -5,6 +5,7 @@ import { TableList, TableColumn } from '../../../shared/components/table-list/ta
 import { ListPage } from '../../../shared/pages/list-page/list-page';
 import { ConfirmModal } from '../../../shared/components/confirm-modal/confirm-modal';
 import { FormModal, DialogField } from '../../../shared/components/form-modal/form-modal';
+import { SearchBar } from '../../../shared/components/search-bar/search-bar';
 
 interface Professor {
   id: number;
@@ -14,7 +15,7 @@ interface Professor {
 
 @Component({
   selector: 'app-professores-list',
-  imports: [MatIconModule, PageHeader, TableList, ListPage, ConfirmModal, FormModal],
+  imports: [MatIconModule, PageHeader, TableList, ListPage, ConfirmModal, FormModal, SearchBar],
   templateUrl: './professores-list.html',
   styleUrl: './professores-list.css',
 })
@@ -78,6 +79,13 @@ export class ProfessoresList {
 
   onPageChange(page: number): void {
     this.currentPage = page;
+  }
+
+
+  // ── Search bar ─────────────────────────────────────────────────────────────
+
+  onSearch(query: string): void {
+    console.log('Buscar:', query);
   }
 
   // ── Modal de cadastro / edição ─────────────────────────────────────────────

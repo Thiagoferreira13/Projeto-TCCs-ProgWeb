@@ -1,0 +1,16 @@
+<section class="search-bar">
+  <div class="search-bar__input-wrapper">
+    <mat-icon class="search-bar__icon">search</mat-icon>
+    <input
+      class="search-bar__input"
+      type="text"
+      [placeholder]="placeholder"
+      [(ngModel)]="query"
+      (keydown)="onKeydown($event)" />
+  </div>
+
+  <button class="search-bar__btn" (click)="onSearch()">
+    <mat-icon>search</mat-icon>
+    Buscar
+  </button>
+</section>

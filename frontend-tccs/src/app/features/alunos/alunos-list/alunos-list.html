@@ -8,6 +8,11 @@
     (buttonClick)="abrirCadastro()">
   </app-page-header>
 
+  <app-search-bar
+    placeholder="Buscar por nome ou ou matrícula..."
+    (search)="onSearch($event)">
+  </app-search-bar>
+
   <app-table-list
     [columns]="columns"
     [totalItems]="alunos.length"
