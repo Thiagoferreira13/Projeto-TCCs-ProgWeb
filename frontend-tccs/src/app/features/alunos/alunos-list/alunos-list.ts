@@ -3,6 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { PageHeader } from '../../../shared/components/page-header/page-header';
 import { TableList, TableColumn } from '../../../shared/components/table-list/table-list';
 import { ListPage } from '../../../shared/pages/list-page/list-page';
+import { ConfirmModal } from '../../../shared/components/confirm-modal/confirm-modal';
 
 interface Aluno {
   id: number;
@@ -13,7 +14,7 @@ interface Aluno {
 
 @Component({
   selector: 'app-alunos-list',
-  imports: [MatIconModule, PageHeader, TableList, ListPage],
+  imports: [MatIconModule, PageHeader, TableList, ListPage, ConfirmModal],
   templateUrl: './alunos-list.html',
   styleUrl: './alunos-list.css',
 })
@@ -82,7 +83,17 @@ export class AlunosList {
     console.log('Editar aluno:', aluno.id);
   }
 
+  dialogOpen = false;
+  alunoParaExcluir: Aluno | null = null;
+
   excluirAluno(aluno: Aluno): void {
-    console.log('Excluir aluno:', aluno.id);
+    this.alunoParaExcluir = aluno;
+    this.dialogOpen = true;
+  }
+
+  onConfirmDelete(): void {
+    // lógica de exclusão com this.alunoParaExcluir
+    this.dialogOpen = false;
+    this.alunoParaExcluir = null;
   }
 }

@@ -28,4 +28,15 @@
 
   </app-table-list>
 
+  <app-confirm-modal
+    [open]="dialogOpen"
+    title="Excluir Professor"
+    message="Tem certeza que deseja excluir este professor? Esta ação é irreversível."
+    warningText="Os dados e registros vinculados a este professor podem ser afetados."
+    confirmLabel="Excluir"
+    [destructive]="true"
+    (confirmed)="onConfirmDelete()"
+    (cancelled)="dialogOpen = false">
+  </app-confirm-modal>
+
 </app-list-page>

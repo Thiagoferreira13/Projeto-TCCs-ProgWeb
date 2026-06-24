@@ -29,4 +29,15 @@
 
   </app-table-list>
 
+  <app-confirm-modal
+    [open]="dialogOpen"
+    title="Excluir Aluno"
+    message="Tem certeza que deseja excluir este aluno? Esta ação é irreversível."
+    warningText="Os TCCs vinculados a este aluno serão arquivados automaticamente."
+    confirmLabel="Excluir"
+    [destructive]="true"
+    (confirmed)="onConfirmDelete()"
+    (cancelled)="dialogOpen = false">
+  </app-confirm-modal>
+
 </app-list-page>

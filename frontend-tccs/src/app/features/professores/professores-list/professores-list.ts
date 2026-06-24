@@ -3,6 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { PageHeader } from '../../../shared/components/page-header/page-header';
 import { TableList, TableColumn } from '../../../shared/components/table-list/table-list';
 import { ListPage } from '../../../shared/pages/list-page/list-page';
+import { ConfirmModal } from '../../../shared/components/confirm-modal/confirm-modal';
 
 interface Professor {
   id: number;
@@ -12,7 +13,7 @@ interface Professor {
 
 @Component({
   selector: 'app-professores-list',
-  imports: [MatIconModule, PageHeader, TableList, ListPage],
+  imports: [MatIconModule, PageHeader, TableList, ListPage, ConfirmModal],
   templateUrl: './professores-list.html',
   styleUrl: './professores-list.css',
 })
@@ -80,7 +81,17 @@ export class ProfessoresList {
     console.log('Editar professor:', professor.id);
   }
 
+  dialogOpen = false;
+  professorParaExcluir: Professor | null = null;
+
   excluirProfessor(professor: Professor): void {
-    console.log('Excluir professor:', professor.id);
+    this.professorParaExcluir = professor;
+    this.dialogOpen = true;
+  }
+
+  onConfirmDelete(): void {
+    // lógica de exclusão com this.professorParaExcluir
+    this.dialogOpen = false;
+    this.professorParaExcluir = null;
   }
 }
