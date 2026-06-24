@@ -2,9 +2,9 @@
   <!-- HEADER -->
   <div class="page-header">
     <div class="page-header__info">
-      <h1 class="page-header__title">Editar Registro de TCC</h1>
+      <h1 class="page-header__title">Detalhes do TCC</h1>
       <p class="page-header__subtitle">
-        Atualize as informações do trabalho de conclusão de curso.
+        Visualize as informações completas do trabalho de conclusão de curso.
       </p>
     </div>
   </div>
@@ -17,16 +17,16 @@
   <div class="form-error">{{ erro() }}</div>
   }
 
-  @if (!carregando()) {
-  <!-- FORMULÁRIO (componente reutilizável), preenchido com os dados carregados -->
-  <app-tcc-form [tcc]="tcc()"></app-tcc-form>
+  @if (!carregando() && !erro()) {
+  <!-- FORMULÁRIO em modo somente leitura -->
+  <app-tcc-form [tcc]="tcc()" [somenteLeitura]="true"></app-tcc-form>
 
-  <!-- AÇÕES -->
+  <!-- AÇÕES-->
   <div class="form-actions">
-    <button class="btn-text" (click)="cancelar()" [disabled]="salvando()">Cancelar</button>
-    <button class="btn-primary" (click)="salvar()" [disabled]="salvando()">
-      <mat-icon>save</mat-icon>
-      {{ salvando() ? 'Salvando...' : 'Atualizar TCC' }}
+    <button class="btn-text" (click)="voltar()">Voltar</button>
+    <button class="btn-primary" (click)="editar()">
+      <mat-icon>edit</mat-icon>
+      Editar
     </button>
   </div>
   }

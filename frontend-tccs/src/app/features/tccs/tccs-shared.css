@@ -97,6 +97,17 @@
   color: #9ca3af;
 }
 
+/* ===== MENSAGEM DE ERRO (formulários) ===== */
+.form-error {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
 /* ===== RESPONSIVIDADE DO HEADER ===== */
 @media (max-width: 768px) {
 

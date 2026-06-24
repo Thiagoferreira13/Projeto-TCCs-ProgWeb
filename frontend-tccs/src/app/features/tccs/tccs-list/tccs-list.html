@@ -8,122 +8,146 @@
         Gerencie e acompanhe o status de todos os Termos de Conclusão de Curso.
       </p>
     </div>
-    <button class="btn-primary">
+    <button class="btn-primary" routerLink="/tccs/novo">
       <mat-icon>add_to_photos</mat-icon> Novo TCC
     </button>
   </div>
 
   <!--Barra com pesquisa e filtros-->
+  <!-- Barra com pesquisa e filtros -->
   <div class="search-bar">
+
     <div class="search-bar__input-wrapper">
       <mat-icon class="search-bar__icon">search</mat-icon>
-      <input class="search-bar__input" type="text" placeholder="Buscar por título, aluno ou orientador..." />
+
+      <input class="search-bar__input" type="text" placeholder="Buscar por título ou resumo..." [ngModel]="termoBusca()"
+        (ngModelChange)="onBuscaChange($event)" />
     </div>
 
     <div class="search-bar__filters">
       <span class="search-bar__label">Filtrar por Status:</span>
-      <select class="search-bar__select">
-        <option>Todos os Status</option>
-        <option>Aprovado</option>
-        <option>Em Elaboração</option>
-        <option>Enviado</option>
-        <option>Reprovado</option>
-      </select>
-      <button class="btn-outline">
-        <mat-icon>tune</mat-icon> Filtros Avançados
-      </button>
+
+      <div class="search-bar__select-wrapper">
+        <select class="search-bar__select" [ngModel]="statusFiltro()" (ngModelChange)="onStatusChange($event)">
+          @for (opt of statusOptions; track opt.valor) {
+          <option [value]="opt.valor">
+            {{ opt.label }}
+          </option>
+          }
+        </select>
+      </div>
     </div>
+
   </div>
 
+  <!--Estado de carregamento-->
+  @if (carregando()) {
+  <div class="table-container">
+    <div class="state-message">Carregando TCCs...</div>
+  </div>
+  }
+
+  <!--Estado de erro-->
+  @if (erro() && !carregando()) {
+  <div class="table-container">
+    <div class="state-message state-message--error">{{ erro() }}</div>
+  </div>
+  }
+
   <!--Tabela-->
+  @if (!carregando() && !erro()) {
   <div class="table-container">
 
     <!--Área com scroll horizontal: só header + linhas-->
     <div class="table-scroll">
       <div class="table-header">
         <span class="table-header__col col-title">Título</span>
-        <span class="table-header__col col-student">Aluno / Curso</span>
+        <span class="table-header__col col-resumo">Resumo</span>
+        <span class="table-header__col col-student">Aluno</span>
         <span class="table-header__col col-advisor">Orientador</span>
         <span class="table-header__col col-type">Tipo / Semestre</span>
         <span class="table-header__col col-status">Status</span>
-        <span class="table-header__col col-file">Arquivo</span>
         <span class="table-header__col col-actions">Ações</span>
       </div>
 
       <!--Linhas da tabela-->
-      @for (tcc of tccs; track tcc.id) {
+      @for (tcc of tccsDaPagina(); track tcc.id) {
       <div class="table-row">
         <!--Titulo e id-->
         <div class="table-row__col col-title">
           <span class="tcc-title">{{ tcc.titulo }}</span>
           <span class="tcc-id">ID: {{ tcc.id }}</span>
         </div>
-        <!--Aluno e curso-->
-        <div class="table-row__col col-student">
-          <span class="tcc-name">{{ tcc.aluno }}</span>
-          <span class="tcc-course">{{ tcc.curso }}</span>
+        <!--Resumo truncado-->
+        <div class="table-row__col col-resumo">
+          <span class="tcc-resumo">{{ tcc.resumo }}</span>
         </div>
-        <!--Orientador-->
+        <!--Aluno (só temos o ID, sem service de Aluno)-->
+        <div class="table-row__col col-student">
+          <span class="tcc-name">Aluno #{{ tcc.aluno }}</span>
+        </div>
+        <!--Orientador (só temos o ID, sem service de Professor)-->
         <div class="table-row__col col-advisor">
-          {{ tcc.orientador }}
+          Professor #{{ tcc.orientador }}
         </div>
         <!--Tipo e semestre-->
         <div class="table-row__col col-type">
-          <span>{{ tcc.tipo }}</span>
-          <span class="tcc-semester">{{ tcc.semestre }}</span>
+          <span>{{ tcc.tipo_display }}</span>
+          <span class="tcc-semester">{{ tcc.semestre_letivo_defesa || '—' }}</span>
         </div>
         <!--Status-->
         <div class="table-row__col col-status">
-          <span [class]="getBadgeClass(tcc.status)">
-            {{ tcc.status }}
+          <span [class]="getBadgeClass(tcc.status_display)">
+            {{ tcc.status_display }}
           </span>
         </div>
-        <!--Arquivo - Talvez saia-->
-        <div class="table-row__col col-file">
-          @if (tcc.arquivo) {
-          <mat-icon class="file-icon file-icon--pdf">picture_as_pdf</mat-icon>
-          <mat-icon class="file-icon file-icon--view">visibility</mat-icon>
-          <mat-icon class="file-icon file-icon--download">download</mat-icon>
-          } @else {
-          <span class="no-file">Pendente</span>
-          }
-        </div>
-
         <!--Ações-->
         <div class="table-row__col col-actions">
-          <mat-icon class="action-icon action-icon--edit">edit</mat-icon>
-          <mat-icon class="action-icon action-icon--transfer">swap_horiz</mat-icon>
+          <mat-icon class="action-icon action-icon--edit" (click)="irParaEdicao(tcc)">edit</mat-icon>
+          <mat-icon class="action-icon action-icon--view" (click)="irParaDetalhes(tcc)">visibility</mat-icon>
           <mat-icon class="action-icon action-icon--delete" (click)="abrirModalExclusao(tcc)">delete</mat-icon>
         </div>
       </div>
+      }
+
+      @if (todosTccs().length === 0) {
+      <div class="state-message">Nenhum TCC cadastrado ainda.</div>
       }
     </div>
 
     <!--Paginação - fora da área de scroll, sempre fixa e centralizada-->
     <div class="table-footer">
       <span class="table-footer__info">
-        Mostrando {{ tccs.length }} de {{ tccs.length }} resultados
+        Mostrando {{ tccsDaPagina().length }} de {{ todosTccs().length }} resultados
       </span>
       <div class="table-footer__pages">
-        <button class="page-btn" disabled>
+        <button class="page-btn" [disabled]="paginaAtual() === 1" (click)="paginaAnterior()">
           <mat-icon>chevron_left</mat-icon>
         </button>
-        <button class="page-btn page-btn--active">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn">3</button>
-        <button class="page-btn">
+
+        @for (pagina of paginas(); track pagina) {
+        <button class="page-btn" [class.page-btn--active]="pagina === paginaAtual()" (click)="irParaPagina(pagina)">
+          {{ pagina }}
+        </button>
+        }
+
+        <button class="page-btn" [disabled]="paginaAtual() === totalPaginas()" (click)="proximaPagina()">
           <mat-icon>chevron_right</mat-icon>
         </button>
       </div>
     </div>
   </div>
+  }
+
   <!--Footer da página-->
   <div class="page-footer">
     © 2024 Universidade Federal - Sistema de Gestão de TCC
   </div>
+
   <!--Modal de exclusão-->
-  @if (tccParaExcluir) {
-  <app-tcc-delete-modal [tcc]="tccParaExcluir" (cancelar)="fecharModalExclusao()" (confirmar)="confirmarExclusao()">
+  @if (tccParaExcluir()) {
+  <app-tcc-delete-modal [tcc]="tccParaExcluir()" (cancelar)="fecharModalExclusao()" (confirmar)="confirmarExclusao()">
   </app-tcc-delete-modal>
   }
+
 </div>
