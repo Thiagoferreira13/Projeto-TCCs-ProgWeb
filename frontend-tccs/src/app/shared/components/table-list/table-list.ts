@@ -8,8 +8,6 @@ export interface TableColumn {
   minWidth?: string;
 }
 
-export type PageItem = number | '...';
-
 @Component({
   selector: 'app-table-list',
   imports: [FormsModule, MatIconModule],
@@ -21,8 +19,6 @@ export class TableList implements OnChanges {
   @Input() columns: TableColumn[] = [];
   @Input() totalItems: number = 0;
   @Input() pageSize: number = 10;
-
-  @Input() windowSize: number = 1;
   @Input() currentPage = 1;
 
   @Output() pageChange = new EventEmitter<number>();
@@ -35,7 +31,7 @@ export class TableList implements OnChanges {
     }
   }
 
-   get totalPages(): number {
+  get totalPages(): number {
     return Math.max(1, Math.ceil(this.totalItems / this.pageSize));
   }
 
@@ -46,37 +42,6 @@ export class TableList implements OnChanges {
 
   get startItem(): number {
     return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
-  }
-
-  get pageItems(): PageItem[] {
-    const { currentPage, totalPages, windowSize } = this;
-
-    if (totalPages <= 1) return [1];
-
-    const rangeStart = Math.max(2, currentPage - windowSize);
-    const rangeEnd = Math.min(totalPages - 1, currentPage + windowSize);
-
-    const items: PageItem[] = [1];
-
-    if (rangeStart > 2) {
-      items.push('...');
-    }
-
-    for (let p = rangeStart; p <= rangeEnd; p++) {
-      items.push(p);
-    }
-
-    if (rangeEnd < totalPages - 1) {
-      items.push('...');
-    }
-
-    items.push(totalPages);
-
-    return items;
-  }
-
-  isEllipsis(item: PageItem): item is '...' {
-    return item === '...';
   }
 
   goToPage(page: number): void {

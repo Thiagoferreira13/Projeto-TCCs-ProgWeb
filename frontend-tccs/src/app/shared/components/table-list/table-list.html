@@ -18,45 +18,33 @@
 
   <footer class="table-footer">
     <span class="table-footer__info">
-      Mostrando {{ startItem }}-{{ startItem + shownItems - 1 }} de {{ totalItems }} resultados
+      Mostrando {{ startItem }}–{{ startItem + shownItems - 1 }} de {{ totalItems }} resultados
     </span>
 
-    <div class="table-footer__pages">
-      <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+    <div class="table-footer__nav">
+      <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)" aria-label="Página anterior">
         <mat-icon>chevron_left</mat-icon>
       </button>
 
-      @for (item of pageItems; track $index) {
-        @if (isEllipsis(item)) {
-          <span class="page-ellipsis">…</span>
-        } @else {
-          <button
-            class="page-btn"
-            [class.page-btn--active]="item === currentPage"
-            (click)="goToPage(item)">
-            {{ item }}
-          </button>
-        }
-      }
+      <div class="table-footer__jump">
+        <span class="jump-label">Página</span>
+        <input
+          class="page-input"
+          type="number"
+          min="1"
+          [max]="totalPages"
+          [(ngModel)]="pageInput"
+          (keydown.enter)="goToTypedPage()"
+          (blur)="goToTypedPage()"
+          aria-label="Número da página" />
+        <span class="jump-label">de {{ totalPages }}</span>
+        <button class="page-jump-btn" type="button" (click)="goToTypedPage()" aria-label="Ir para página">
+          <mat-icon>keyboard_return</mat-icon>
+        </button>
+      </div>
 
-      <button class="page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+      <button class="page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)" aria-label="Próxima página">
         <mat-icon>chevron_right</mat-icon>
-      </button>
-    </div>
-
-    <div class="table-footer__jump">
-      <span>Página</span>
-      <input
-        class="page-input"
-        type="number"
-        min="1"
-        [max]="totalPages"
-        [(ngModel)]="pageInput"
-        (keydown.enter)="goToTypedPage()"
-        (blur)="goToTypedPage()" />
-      <span>de {{ totalPages }}</span>
-      <button class="page-jump-btn" type="button" (click)="goToTypedPage()" aria-label="Ir para página">
-        <mat-icon>keyboard_return</mat-icon>
       </button>
     </div>
   </footer>
