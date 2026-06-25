@@ -182,6 +182,7 @@ export class ProfessoresList implements OnInit {
           console.error('Erro ao editar professor', erro);
           if (erro.error) console.error('Detalhes:', erro.error);
           this.formError = getApiErrorMessage(erro, 'Não foi possível editar o professor.');
+          this.cdr.detectChanges(); 
         }
       });
     } else {
@@ -195,6 +196,7 @@ export class ProfessoresList implements OnInit {
           console.error('Erro ao cadastrar professor', erro);
           if (erro.error) console.error('Detalhes:', erro.error);
           this.formError = getApiErrorMessage(erro, 'Não foi possível cadastrar o professor.');
+          this.cdr.detectChanges(); 
         }
       });
     }
@@ -221,6 +223,7 @@ export class ProfessoresList implements OnInit {
       error: (erro) => {
         console.error('Erro ao excluir professor', erro);
         if (erro.error) console.error('Detalhes:', erro.error);
+        this.cdr.detectChanges(); 
       }
     });
   }

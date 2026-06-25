@@ -116,6 +116,7 @@ export class UnidadesAcademicas implements OnInit {
         error: (erro) => {
           console.error('Erro ao editar unidade acadêmica', erro);
           this.formError = getApiErrorMessage(erro, 'Não foi possível editar a unidade acadêmica.');
+          this.cdr.detectChanges();
         }
       });
       return;
@@ -126,6 +127,7 @@ export class UnidadesAcademicas implements OnInit {
       error: (erro) => {
         console.error('Erro ao cadastrar unidade acadêmica', erro);
         this.formError = getApiErrorMessage(erro, 'Não foi possível cadastrar a unidade acadêmica.');
+        this.cdr.detectChanges();
       }
     });
   }
