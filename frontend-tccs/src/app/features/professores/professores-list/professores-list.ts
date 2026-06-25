@@ -9,6 +9,7 @@ import { SearchBar } from '../../../shared/components/search-bar/search-bar';
 import { Professor } from '../../../core/models/professor.model';
 import { ProfessorService } from '../../../core/service/professor.service';
 import { DepartamentoService } from '../../../core/service/departamento.service';
+import { getApiErrorMessage } from '../../../core/utils/api-error';
 
 // Tipo para os valores iniciais do formulário
 interface FormInitialValue {
@@ -135,10 +136,12 @@ export class ProfessoresList implements OnInit {
 
   formOpen = false;
   professorEmEdicao: Professor | null = null;
+  formError: string | null = null;
 
   abrirCadastro(): void {
     this.professorEmEdicao = null;
     this.initialValue = { nome: '', departamento: '' };
+    this.formError = null;
     this.formOpen = true;
   }
 
@@ -154,10 +157,13 @@ export class ProfessoresList implements OnInit {
       departamento: departamentoStr
     };
     this.professorEmEdicao = professor;
+    this.formError = null;
     this.formOpen = true;
   }
 
   onSubmit(valores: Record<string, any>): void {
+    this.formError = null;
+
     const dados = {
       nome: valores['nome'],
       departamento: Number(valores['departamento'])
@@ -175,6 +181,7 @@ export class ProfessoresList implements OnInit {
         error: (erro) => {
           console.error('Erro ao editar professor', erro);
           if (erro.error) console.error('Detalhes:', erro.error);
+          this.formError = getApiErrorMessage(erro, 'Não foi possível editar o professor.');
         }
       });
     } else {
@@ -187,6 +194,7 @@ export class ProfessoresList implements OnInit {
         error: (erro) => {
           console.error('Erro ao cadastrar professor', erro);
           if (erro.error) console.error('Detalhes:', erro.error);
+          this.formError = getApiErrorMessage(erro, 'Não foi possível cadastrar o professor.');
         }
       });
     }

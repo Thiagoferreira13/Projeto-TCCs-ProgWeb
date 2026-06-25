@@ -1,3 +1,61 @@
-<span>Fazer o unidades academicas aqui!</span>
+<app-list-page>
 
-<router-outlet></router-outlet>
+  <app-page-header
+    pageTitle="Listagem de Unidades Acadêmicas"
+    subtitle="Gerencie as unidades acadêmicas cadastradas no sistema."
+    buttonText="Nova Unidade"
+    buttonIcon="add"
+    (buttonClick)="abrirCadastro()">
+  </app-page-header>
+
+  <app-search-bar
+    placeholder="Buscar por nome ou sigla..."
+    (search)="onSearch($event)">
+  </app-search-bar>
+
+  <app-table-list
+    [columns]="columns"
+    [totalItems]="unidadesAcademicasFiltradas.length"
+    [pageSize]="pageSize"
+    [currentPage]="currentPage"
+    (pageChange)="onPageChange($event)">
+
+    @for (unidadeAcademica of paginatedUnidadesAcademicas; track unidadeAcademica.id) {
+      <tr table-body>
+        <td>{{ unidadeAcademica.nome }}</td>
+        <td>{{ unidadeAcademica.sigla }}</td>
+        <td>
+          <div class="col-actions">
+            <mat-icon class="action-icon" (click)="editarUnidadeAcademica(unidadeAcademica)">edit</mat-icon>
+            <mat-icon class="action-icon action-icon--delete" (click)="excluirUnidadeAcademica(unidadeAcademica)">delete</mat-icon>
+          </div>
+        </td>
+      </tr>
+    }
+
+  </app-table-list>
+
+</app-list-page>
+
+<app-form-modal
+  [open]="formOpen"
+  [title]="unidadeAcademicaEmEdicao ? 'Editar Unidade Acadêmica' : 'Nova Unidade Acadêmica'"
+  [titleIcon]="unidadeAcademicaEmEdicao ? 'edit' : 'account_balance'"
+  [submitLabel]="unidadeAcademicaEmEdicao ? 'Salvar' : 'Cadastrar'"
+  [fields]="fields"
+  [initialValue]="initialValue"
+  [errorMessage]="formError"
+  (submitted)="onSubmit($event)"
+  (cancelled)="formOpen = false; formError = null">
+</app-form-modal>
+
+<app-confirm-modal
+  [open]="confirmOpen"
+  title="Excluir Unidade Acadêmica"
+  message="Tem certeza que deseja excluir esta unidade acadêmica? Esta ação é irreversível."
+  warningText="Departamentos vinculados a esta unidade acadêmica podem ser afetados."
+  confirmLabel="Excluir"
+  [destructive]="true"
+  (confirmed)="onConfirmDelete()"
+  (cancelled)="confirmOpen = false">
+</app-confirm-modal>

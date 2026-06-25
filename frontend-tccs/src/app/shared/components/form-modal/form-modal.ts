@@ -35,6 +35,8 @@ export class FormModal {
   @Input() fields: DialogField[] = [];
  
   @Input() initialValue: Record<string, any> | null = null;
+
+  @Input() errorMessage: string | null = null;
  
   @Output() submitted = new EventEmitter<Record<string, any>>();
   @Output() cancelled = new EventEmitter<void>();

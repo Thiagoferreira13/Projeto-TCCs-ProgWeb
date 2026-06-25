@@ -1,4 +1,62 @@
-<span>Fazer o cursos aqui!</span>
+<app-list-page>
 
-<router-outlet></router-outlet>
+  <app-page-header
+    pageTitle="Listagem de Cursos"
+    subtitle="Gerencie os cursos cadastrados no sistema."
+    buttonText="Novo Curso"
+    buttonIcon="add"
+    (buttonClick)="abrirCadastro()">
+  </app-page-header>
 
+  <app-search-bar
+    placeholder="Buscar por nome, sigla ou código..."
+    (search)="onSearch($event)">
+  </app-search-bar>
+
+  <app-table-list
+    [columns]="columns"
+    [totalItems]="cursosFiltrados.length"
+    [pageSize]="pageSize"
+    [currentPage]="currentPage"
+    (pageChange)="onPageChange($event)">
+
+    @for (curso of paginatedCursos; track curso.id) {
+      <tr table-body>
+        <td>{{ curso.nome }}</td>
+        <td>{{ curso.sigla }}</td>
+        <td>{{ curso.codigo }}</td>
+        <td>
+          <div class="col-actions">
+            <mat-icon class="action-icon" (click)="editarCurso(curso)">edit</mat-icon>
+            <mat-icon class="action-icon action-icon--delete" (click)="excluirCurso(curso)">delete</mat-icon>
+          </div>
+        </td>
+      </tr>
+    }
+
+  </app-table-list>
+
+</app-list-page>
+
+<app-form-modal
+  [open]="formOpen"
+  [title]="cursoEmEdicao ? 'Editar Curso' : 'Novo Curso'"
+  [titleIcon]="cursoEmEdicao ? 'edit' : 'school'"
+  [submitLabel]="cursoEmEdicao ? 'Salvar' : 'Cadastrar'"
+  [fields]="fields"
+  [initialValue]="initialValue"
+  [errorMessage]="formError"
+  (submitted)="onSubmit($event)"
+  (cancelled)="formOpen = false; formError = null">
+</app-form-modal>
+
+<app-confirm-modal
+  [open]="confirmOpen"
+  title="Excluir Curso"
+  message="Tem certeza que deseja excluir este curso? Esta ação é irreversível."
+  warningText="Alunos e TCCs vinculados a este curso podem ser afetados."
+  confirmLabel="Excluir"
+  [destructive]="true"
+  (confirmed)="onConfirmDelete()"
+  (cancelled)="confirmOpen = false">
+</app-confirm-modal>

@@ -5,6 +5,8 @@ import { TccDeleteModal, TccResumo } from '../tcc-delete-modal/tcc-delete-modal'
 import { TccService } from '../tcc.service';
 import { Tcc } from '../tcc.model';
 import { Router, RouterLink } from '@angular/router';
+import type { PageItem } from '../../../shared/components/table-list/table-list';
+import { TccLookupData, TccLookupService } from '../tcc-lookup.service';
 
 const ITENS_POR_PAGINA = 10;
 
@@ -27,9 +29,13 @@ export class Tccs implements OnInit {
   // ===== SIGNALS =====
 
   todosTccs = signal<Tcc[]>([]);
+  lookup = signal<TccLookupData | null>(null);
   carregando = signal(false);
+  carregandoLookups = signal(false);
   erro = signal<string | null>(null);
+  erroLookups = signal<string | null>(null);
   paginaAtual = signal(1);
+  paginaDigitada = signal('1');
 
   tccParaExcluir = signal<TccResumo | null>(null);
 
@@ -58,24 +64,67 @@ export class Tccs implements OnInit {
     return this.tccsFiltrados().slice(inicio, inicio + ITENS_POR_PAGINA);
   });
 
-  paginas = computed(() => {
-    const atual = this.paginaAtual();
+  itemInicial = computed(() =>
+    this.tccsFiltrados().length === 0 ? 0 : (this.paginaAtual() - 1) * ITENS_POR_PAGINA + 1
+  );
+
+  itemFinal = computed(() =>
+    Math.min(this.itemInicial() + this.tccsDaPagina().length - 1, this.tccsFiltrados().length)
+  );
+
+  paginas = computed<PageItem[]>(() => {
+    const currentPage = this.paginaAtual();
     const total = this.totalPaginas();
-    const intervalo = 1;
+    const windowSize = 1;
 
-    const inicio = Math.max(1, atual - intervalo);
-    const fim = Math.min(total, atual + intervalo);
+    if (total <= 1) return [1];
 
-    return Array.from({ length: fim - inicio + 1 }, (_, i) => inicio + i);
+    const rangeStart = Math.max(2, currentPage - windowSize);
+    const rangeEnd = Math.min(total - 1, currentPage + windowSize);
+    const items: PageItem[] = [1];
+
+    if (rangeStart > 2) {
+      items.push('...');
+    }
+
+    for (let page = rangeStart; page <= rangeEnd; page++) {
+      items.push(page);
+    }
+
+    if (rangeEnd < total - 1) {
+      items.push('...');
+    }
+
+    items.push(total);
+    return items;
   });
 
   constructor(
        private tccService: TccService,
+       private tccLookupService: TccLookupService,
        private router: Router
      ) {}
 
   ngOnInit() {
+    this.carregarLookups();
     this.carregarTccs();
+  }
+
+  carregarLookups() {
+    this.carregandoLookups.set(true);
+    this.erroLookups.set(null);
+
+    this.tccLookupService.carregar().subscribe({
+      next: (lookup) => {
+        this.lookup.set(lookup);
+        this.carregandoLookups.set(false);
+      },
+      error: (err) => {
+        console.error('Erro ao carregar alunos e professores:', err);
+        this.erroLookups.set('Não foi possível carregar os nomes de alunos e professores.');
+        this.carregandoLookups.set(false);
+      },
+    });
   }
 
   carregarTccs(search = '') {
@@ -85,6 +134,9 @@ export class Tccs implements OnInit {
     this.tccService.listar(search).subscribe({
       next: (dados) => {
         this.todosTccs.set(dados);
+        if (this.paginaAtual() > this.totalPaginas()) {
+          this.irParaPagina(this.totalPaginas());
+        }
         this.carregando.set(false);
       },
       error: (err) => {
@@ -100,6 +152,7 @@ export class Tccs implements OnInit {
   onBuscaChange(termo: string) {
     this.termoBusca.set(termo);
     this.paginaAtual.set(1);
+    this.paginaDigitada.set('1');
     // Debounce simples: aguarda 400ms antes de ir ao backend
     clearTimeout((this as any)._buscaTimeout);
     (this as any)._buscaTimeout = setTimeout(() => {
@@ -110,6 +163,7 @@ export class Tccs implements OnInit {
   onStatusChange(status: string) {
     this.statusFiltro.set(status);
     this.paginaAtual.set(1);
+    this.paginaDigitada.set('1');
   }
 
   // ===== PAGINAÇÃO =====
@@ -117,7 +171,24 @@ export class Tccs implements OnInit {
   irParaPagina(pagina: number) {
     if (pagina >= 1 && pagina <= this.totalPaginas()) {
       this.paginaAtual.set(pagina);
+      this.paginaDigitada.set(String(pagina));
     }
+  }
+
+  irParaPaginaDigitada() {
+    const pagina = Number(this.paginaDigitada());
+
+    if (!Number.isFinite(pagina)) {
+      this.paginaDigitada.set(String(this.paginaAtual()));
+      return;
+    }
+
+    const paginaFinal = Math.min(this.totalPaginas(), Math.max(1, Math.trunc(pagina)));
+    this.irParaPagina(paginaFinal);
+  }
+
+  onPaginaDigitadaChange(valor: string) {
+    this.paginaDigitada.set(valor);
   }
 
   paginaAnterior() {
@@ -128,19 +199,37 @@ export class Tccs implements OnInit {
     this.irParaPagina(this.paginaAtual() + 1);
   }
 
+  isEllipsis(item: PageItem): item is '...' {
+    return item === '...';
+  }
+
   // ===== STATUS (badge) =====
 
   getBadgeClass(statusDisplay: string): string {
     return 'badge badge--' + statusDisplay.toLowerCase().replace(' ', '-');
   }
 
+  getNomeAluno(alunoId: number): string {
+    if (this.carregandoLookups()) return 'Carregando opções...';
+
+    const aluno = this.lookup()?.alunosPorId.get(alunoId);
+    return aluno ? this.tccLookupService.formatarAluno(aluno) : 'Aluno não encontrado';
+  }
+
+  getNomeProfessor(professorId: number): string {
+    if (this.carregandoLookups()) return 'Carregando opções...';
+
+    const professor = this.lookup()?.professoresPorId.get(professorId);
+    return professor ? this.tccLookupService.formatarProfessor(professor) : 'Professor não encontrado';
+  }
+
   // ===== EXCLUSÃO =====
 
   abrirModalExclusao(tcc: Tcc) {
     this.tccParaExcluir.set({
-      id: String(tcc.id),
+      id: tcc.id,
       titulo: tcc.titulo,
-      aluno: `Aluno #${tcc.aluno}`,
+      aluno: this.getNomeAluno(tcc.aluno),
       status: tcc.status_display,
     });
   }
@@ -153,14 +242,14 @@ export class Tccs implements OnInit {
     const selecionado = this.tccParaExcluir();
     if (!selecionado) return;
 
-    const id = Number(selecionado.id);
+    const id = selecionado.id;
     this.tccService.excluir(id).subscribe({
       next: () => {
         this.todosTccs.update((lista) => lista.filter((t) => t.id !== id));
         this.fecharModalExclusao();
 
         if (this.tccsDaPagina().length === 0 && this.paginaAtual() > 1) {
-          this.paginaAtual.update((p) => p - 1);
+          this.irParaPagina(this.paginaAtual() - 1);
         }
       },
       error: (err) => {

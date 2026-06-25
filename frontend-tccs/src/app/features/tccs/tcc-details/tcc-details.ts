@@ -28,7 +28,7 @@ export class TccDetails implements OnInit {
     const idParam = this.route.snapshot.paramMap.get('id');
 
     if (!idParam) {
-      this.erro.set('ID do TCC não informado na rota.');
+      this.erro.set('TCC não informado na rota.');
       return;
     }
 

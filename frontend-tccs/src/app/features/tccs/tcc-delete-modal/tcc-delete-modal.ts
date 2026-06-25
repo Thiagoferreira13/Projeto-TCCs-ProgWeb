@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 export interface TccResumo {
-  id: string;
+  id: number;
   titulo: string;
   aluno: string;
   status: string;
@@ -23,8 +23,6 @@ export class TccDeleteModal {
   @Output() cancelar = new EventEmitter<void>();
 
   onConfirmar() {
-    console.log('Confirmou exclusão do TCC:', this.tcc?.id);
-    // Aqui depois vamos chamar a API (DELETE) antes de emitir
     this.confirmar.emit();
   }
 

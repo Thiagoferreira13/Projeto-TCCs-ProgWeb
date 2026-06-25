@@ -43,5 +43,21 @@
         <mat-icon>chevron_right</mat-icon>
       </button>
     </div>
+
+    <div class="table-footer__jump">
+      <span>Página</span>
+      <input
+        class="page-input"
+        type="number"
+        min="1"
+        [max]="totalPages"
+        [(ngModel)]="pageInput"
+        (keydown.enter)="goToTypedPage()"
+        (blur)="goToTypedPage()" />
+      <span>de {{ totalPages }}</span>
+      <button class="page-jump-btn" type="button" (click)="goToTypedPage()" aria-label="Ir para página">
+        <mat-icon>keyboard_return</mat-icon>
+      </button>
+    </div>
   </footer>
 </div>

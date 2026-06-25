@@ -1,4 +1,204 @@
+<section class="dashboard-page">
+  <header class="dashboard-hero">
+    <div class="hero-copy">
+      <span class="hero-eyebrow">Portal de TCCs</span>
+      <h1>Painel de Indicadores</h1>
+      <p>Acompanhe a base de trabalhos por status, cursos, orientadores e estrutura acadêmica.</p>
+    </div>
 
-<span>Fazer o dashboard aqui!</span>
+    <div class="hero-panel">
+      <button class="refresh-btn" type="button" (click)="carregarEstatisticas()" [disabled]="carregando()">
+        <mat-icon>refresh</mat-icon>
+        Atualizar
+      </button>
 
-<router-outlet></router-outlet>
+      <div class="hero-total">
+        <span>Total monitorado</span>
+        <strong>{{ estatisticas()?.total_geral ?? 0 }}</strong>
+        <div class="hero-progress">
+          <span [style.width.%]="approvalRate()"></span>
+        </div>
+        <small>{{ approvalRate() }}% aprovados</small>
+      </div>
+    </div>
+  </header>
+
+  @if (carregando()) {
+    <div class="state-card">
+      <mat-icon>hourglass_empty</mat-icon>
+      <span>Carregando estatísticas...</span>
+    </div>
+  } @else if (erro()) {
+    <div class="state-card state-card--error">
+      <mat-icon>error</mat-icon>
+      <span>{{ erro() }}</span>
+    </div>
+  } @else if (isEmpty()) {
+    <div class="state-card">
+      <mat-icon>bar_chart</mat-icon>
+      <span>Nenhum TCC cadastrado para gerar estatísticas.</span>
+    </div>
+  } @else {
+    <div class="summary-grid">
+      @for (card of summaryCards(); track card.label) {
+        <article class="summary-card" [class]="'summary-card summary-card--' + card.tone">
+          <div class="summary-card__icon">
+            <mat-icon>{{ card.icon }}</mat-icon>
+          </div>
+          <div>
+            <span>{{ card.label }}</span>
+            <strong>{{ card.value }}</strong>
+            <small>{{ card.helper }}</small>
+          </div>
+        </article>
+      }
+    </div>
+
+    <div class="insights-grid">
+      @for (insight of insights(); track insight.title) {
+        <article class="insight-card" [class]="'insight-card insight-card--' + insight.tone">
+          <div class="insight-card__icon">
+            <mat-icon>{{ insight.icon }}</mat-icon>
+          </div>
+          <div>
+            <span>{{ insight.title }}</span>
+            <strong>{{ insight.value }}</strong>
+            <small>{{ insight.description }}</small>
+          </div>
+        </article>
+      }
+    </div>
+
+    <div class="charts-grid">
+      <article class="chart-card">
+        <div class="chart-card__header">
+          <div class="chart-card__title">
+            <mat-icon>donut_large</mat-icon>
+            <div>
+              <h2>Status dos TCCs</h2>
+              <span>Distribuição por situação</span>
+            </div>
+          </div>
+        </div>
+        <div class="chart-box">
+          <canvas baseChart [type]="'doughnut'" [data]="statusChartData()" [options]="doughnutOptions"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-card__header">
+          <div class="chart-card__title">
+            <mat-icon>category</mat-icon>
+            <div>
+              <h2>Tipos de Trabalho</h2>
+              <span>Volume por modalidade</span>
+            </div>
+          </div>
+        </div>
+        <div class="chart-box">
+          <canvas baseChart [type]="'bar'" [data]="tipoChartData()" [options]="horizontalBarOptions"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-card__header">
+          <div class="chart-card__title">
+            <mat-icon>translate</mat-icon>
+            <div>
+              <h2>Idiomas</h2>
+              <span>Distribuição dos trabalhos</span>
+            </div>
+          </div>
+        </div>
+        <div class="chart-box">
+          <canvas baseChart [type]="'doughnut'" [data]="idiomaChartData()" [options]="doughnutOptions"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card chart-card--wide">
+        <div class="chart-card__header">
+          <div class="chart-card__title">
+            <mat-icon>timeline</mat-icon>
+            <div>
+              <h2>Defesas por Semestre</h2>
+              <span>Evolução do volume de TCCs</span>
+            </div>
+          </div>
+        </div>
+        <div class="chart-box chart-box--wide">
+          <canvas baseChart [type]="'bar'" [data]="semestreChartData()" [options]="barOptions"></canvas>
+        </div>
+      </article>
+    </div>
+
+    <div class="rankings-grid">
+      <article class="ranking-card">
+        <header class="ranking-card__header">
+          <mat-icon>supervisor_account</mat-icon>
+          <h2>Orientadores</h2>
+        </header>
+        @for (item of orientadores(); track item.label; let index = $index) {
+          <div class="ranking-item">
+            <div class="ranking-item__meta">
+              <span class="ranking-item__position">{{ index + 1 }}</span>
+              <span class="ranking-item__label">{{ item.label }}</span>
+              <strong>{{ item.value }}</strong>
+            </div>
+            <div class="ranking-bar"><span [style.width.%]="item.percent"></span></div>
+          </div>
+        }
+      </article>
+
+      <article class="ranking-card">
+        <header class="ranking-card__header">
+          <mat-icon>school</mat-icon>
+          <h2>Cursos</h2>
+        </header>
+        @for (item of cursos(); track item.label; let index = $index) {
+          <div class="ranking-item">
+            <div class="ranking-item__meta">
+              <span class="ranking-item__position">{{ index + 1 }}</span>
+              <span class="ranking-item__label">{{ item.label }}</span>
+              <strong>{{ item.value }}</strong>
+            </div>
+            <div class="ranking-bar"><span [style.width.%]="item.percent"></span></div>
+          </div>
+        }
+      </article>
+
+      <article class="ranking-card">
+        <header class="ranking-card__header">
+          <mat-icon>account_balance</mat-icon>
+          <h2>Departamentos</h2>
+        </header>
+        @for (item of departamentos(); track item.label; let index = $index) {
+          <div class="ranking-item">
+            <div class="ranking-item__meta">
+              <span class="ranking-item__position">{{ index + 1 }}</span>
+              <span class="ranking-item__label">{{ item.label }}</span>
+              <strong>{{ item.value }}</strong>
+            </div>
+            <div class="ranking-bar"><span [style.width.%]="item.percent"></span></div>
+          </div>
+        }
+      </article>
+
+      <article class="ranking-card">
+        <header class="ranking-card__header">
+          <mat-icon>domain</mat-icon>
+          <h2>Unidades Acadêmicas</h2>
+        </header>
+        @for (item of unidades(); track item.label; let index = $index) {
+          <div class="ranking-item">
+            <div class="ranking-item__meta">
+              <span class="ranking-item__position">{{ index + 1 }}</span>
+              <span class="ranking-item__label">{{ item.label }}</span>
+              <strong>{{ item.value }}</strong>
+            </div>
+            <div class="ranking-bar"><span [style.width.%]="item.percent"></span></div>
+          </div>
+        }
+      </article>
+    </div>
+  }
+</section>

@@ -9,6 +9,7 @@ import { SearchBar } from '../../../shared/components/search-bar/search-bar';
 import { Aluno } from '../../../core/models/aluno.model';
 import { AlunoService } from '../../../core/service/aluno.service';
 import { CursoService } from '../../../core/service/curso.service';
+import { getApiErrorMessage } from '../../../core/utils/api-error';
 
 // Tipo para os valores iniciais do formulário
 interface FormInitialValue {
@@ -134,10 +135,12 @@ export class AlunosList implements OnInit {
 
   formOpen = false;
   alunoEmEdicao: Aluno | null = null;
+  formError: string | null = null;
 
   abrirCadastro(): void {
     this.alunoEmEdicao = null;
     this.initialValue = { nome: '', matricula: '', curso: '' };
+    this.formError = null;
     this.formOpen = true;
   }
 
@@ -154,10 +157,13 @@ export class AlunosList implements OnInit {
       curso: cursoStr
     };
     this.alunoEmEdicao = aluno;
+    this.formError = null;
     this.formOpen = true;
   }
 
   onSubmit(valores: Record<string, any>): void {
+    this.formError = null;
+
     const dados = {
       nome: valores['nome'],
       matricula: valores['matricula'],
@@ -176,6 +182,7 @@ export class AlunosList implements OnInit {
         error: (erro) => {
           console.error('Erro ao editar aluno', erro);
           if (erro.error) console.error('Detalhes:', erro.error);
+          this.formError = getApiErrorMessage(erro, 'Não foi possível editar o aluno.');
         }
       });
     } else {
@@ -188,6 +195,7 @@ export class AlunosList implements OnInit {
         error: (erro) => {
           console.error('Erro ao cadastrar aluno', erro);
           if (erro.error) console.error('Detalhes:', erro.error);
+          this.formError = getApiErrorMessage(erro, 'Não foi possível cadastrar o aluno.');
         }
       });
     }

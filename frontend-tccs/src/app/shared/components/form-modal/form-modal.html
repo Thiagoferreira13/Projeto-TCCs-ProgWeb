@@ -17,6 +17,13 @@
 
       <!-- Body -->
       <div class="form-dialog-body">
+        @if (errorMessage) {
+          <div class="form-dialog-error">
+            <mat-icon class="form-dialog-error__icon">error</mat-icon>
+            <span>{{ errorMessage }}</span>
+          </div>
+        }
+
         <form [formGroup]="form" (ngSubmit)="onSubmit()" id="form-dialog-form">
           @for (field of fields; track field.key) {
             <div class="form-field">
