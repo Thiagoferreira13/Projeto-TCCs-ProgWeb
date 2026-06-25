@@ -61,7 +61,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 20px;
+  padding: 12px 20px;
   border-top: 1px solid #e5e7eb;
   background-color: #f1f5f9;
   gap: 12px;
@@ -73,34 +73,95 @@
   color: #6b7280;
 }
 
-.table-footer__pages {
+.table-footer__nav {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
+/* ===== BUSCADOR DE PÁGINA ===== */
 .table-footer__jump {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #64748b;
-  font-size: 13px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0 4px 0 10px;
+  height: 32px;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
 }
 
+.table-footer__jump:focus-within {
+  border-color: #004AC6;
+  box-shadow: 0 0 0 2px rgba(0, 74, 198, 0.14);
+}
+
+.jump-label {
+  font-size: 13px;
+  color: #64748b;
+  white-space: nowrap;
+  padding: 0 4px;
+  user-select: none;
+}
+
+.page-input {
+  width: 40px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.page-input::-webkit-outer-spin-button,
+.page-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.page-jump-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease;
+  flex-shrink: 0;
+}
+
+.page-jump-btn:hover {
+  background-color: #f1f5f9;
+  color: #334155;
+}
+
+.page-jump-btn mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+}
+
+/* ===== BOTÕES DE SETA ===== */
 .page-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 32px;
+  width: 32px;
   height: 32px;
-  padding: 0 8px;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   background: white;
   color: #64748b;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
   transition: all 0.12s ease;
 }
 
@@ -115,78 +176,11 @@
   cursor: not-allowed;
 }
 
-.page-btn--active {
-  background-color: #004AC6;
-  border-color: #004AC6;
-  color: white;
-}
-
-.page-btn--active:hover {
-  background-color: #003a9e;
-  border-color: #003a9e;
-}
-
 .page-btn mat-icon {
   font-size: 18px;
   width: 18px;
   height: 18px;
   line-height: 18px;
-}
-
-.page-input {
-  width: 64px;
-  height: 32px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  background: white;
-  color: #334155;
-  font-size: 13px;
-  text-align: center;
-  outline: none;
-}
-
-.page-input:focus {
-  border-color: #004AC6;
-  box-shadow: 0 0 0 2px rgba(0, 74, 198, 0.16);
-}
-
-.page-jump-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  background: white;
-  color: #64748b;
-  cursor: pointer;
-  transition: all 0.12s ease;
-}
-
-.page-jump-btn:hover {
-  background-color: #f1f5f9;
-  border-color: #cbd5e1;
-  color: #334155;
-}
-
-.page-jump-btn mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-  line-height: 18px;
-}
-
-/* ===== RETICÊNCIAS ===== */
-.page-ellipsis {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 32px;
-  height: 32px;
-  font-size: 13px;
-  color: #94a3b8;
-  user-select: none;
 }
 
 /* ===== AÇÕES ===== */
@@ -212,7 +206,7 @@
 }
 
 /* ===== RESPONSIVIDADE ===== */
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .table-header__col,
   .data-table tbody td {
     padding: 12px 14px;
@@ -221,14 +215,6 @@
   .table-footer {
     flex-direction: column;
     align-items: center;
-    text-align: center;
-  }
-
-  .table-footer__pages {
-    justify-content: center;
-  }
-
-  .table-footer__jump {
-    justify-content: center;
+    padding: 12px 16px;
   }
 }

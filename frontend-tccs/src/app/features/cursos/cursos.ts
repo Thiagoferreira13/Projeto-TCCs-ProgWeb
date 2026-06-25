@@ -121,6 +121,7 @@ export class Cursos implements OnInit {
         error: (erro) => {
           console.error('Erro ao editar curso', erro);
           this.formError = getApiErrorMessage(erro, 'Não foi possível editar o curso.');
+          this.cdr.detectChanges(); 
         }
       });
       return;
@@ -131,6 +132,7 @@ export class Cursos implements OnInit {
       error: (erro) => {
         console.error('Erro ao cadastrar curso', erro);
         this.formError = getApiErrorMessage(erro, 'Não foi possível cadastrar o curso.');
+        this.cdr.detectChanges(); 
       }
     });
   }

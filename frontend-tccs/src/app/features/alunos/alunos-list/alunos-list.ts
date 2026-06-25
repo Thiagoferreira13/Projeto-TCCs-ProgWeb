@@ -183,6 +183,7 @@ export class AlunosList implements OnInit {
           console.error('Erro ao editar aluno', erro);
           if (erro.error) console.error('Detalhes:', erro.error);
           this.formError = getApiErrorMessage(erro, 'Não foi possível editar o aluno.');
+          this.cdr.detectChanges();
         }
       });
     } else {
@@ -196,6 +197,7 @@ export class AlunosList implements OnInit {
           console.error('Erro ao cadastrar aluno', erro);
           if (erro.error) console.error('Detalhes:', erro.error);
           this.formError = getApiErrorMessage(erro, 'Não foi possível cadastrar o aluno.');
+          this.cdr.detectChanges(); 
         }
       });
     }
@@ -222,6 +224,7 @@ export class AlunosList implements OnInit {
       error: (erro) => {
         console.error('Erro ao excluir aluno', erro);
         if (erro.error) console.error('Detalhes:', erro.error);
+        this.cdr.detectChanges();
       }
     });
   }

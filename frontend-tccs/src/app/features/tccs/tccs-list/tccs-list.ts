@@ -5,12 +5,10 @@ import { TccDeleteModal, TccResumo } from '../tcc-delete-modal/tcc-delete-modal'
 import { TccService } from '../tcc.service';
 import { Tcc } from '../tcc.model';
 import { Router, RouterLink } from '@angular/router';
-import type { PageItem } from '../../../shared/components/table-list/table-list';
 import { TccLookupData, TccLookupService } from '../tcc-lookup.service';
 
 const ITENS_POR_PAGINA = 10;
 
-// Valores internos que o backend usa no campo `status`
 const STATUS_OPTIONS = [
   { valor: '', label: 'Todos os Status' },
   { valor: '0', label: 'Em Elaboração' },
@@ -43,12 +41,10 @@ export class Tccs implements OnInit {
   termoBusca = signal('');
   statusFiltro = signal('');
 
-  // Expõe as opções de status para o template
   readonly statusOptions = STATUS_OPTIONS;
 
   // ===== COMPUTED =====
 
-  // Filtragem client-side por status (a busca por texto vai ao backend)
   tccsFiltrados = computed(() => {
     const status = this.statusFiltro();
     if (!status) return this.todosTccs();
@@ -72,38 +68,11 @@ export class Tccs implements OnInit {
     Math.min(this.itemInicial() + this.tccsDaPagina().length - 1, this.tccsFiltrados().length)
   );
 
-  paginas = computed<PageItem[]>(() => {
-    const currentPage = this.paginaAtual();
-    const total = this.totalPaginas();
-    const windowSize = 1;
-
-    if (total <= 1) return [1];
-
-    const rangeStart = Math.max(2, currentPage - windowSize);
-    const rangeEnd = Math.min(total - 1, currentPage + windowSize);
-    const items: PageItem[] = [1];
-
-    if (rangeStart > 2) {
-      items.push('...');
-    }
-
-    for (let page = rangeStart; page <= rangeEnd; page++) {
-      items.push(page);
-    }
-
-    if (rangeEnd < total - 1) {
-      items.push('...');
-    }
-
-    items.push(total);
-    return items;
-  });
-
   constructor(
-       private tccService: TccService,
-       private tccLookupService: TccLookupService,
-       private router: Router
-     ) {}
+    private tccService: TccService,
+    private tccLookupService: TccLookupService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.carregarLookups();
@@ -153,7 +122,6 @@ export class Tccs implements OnInit {
     this.termoBusca.set(termo);
     this.paginaAtual.set(1);
     this.paginaDigitada.set('1');
-    // Debounce simples: aguarda 400ms antes de ir ao backend
     clearTimeout((this as any)._buscaTimeout);
     (this as any)._buscaTimeout = setTimeout(() => {
       this.carregarTccs(termo.trim());
@@ -184,23 +152,12 @@ export class Tccs implements OnInit {
     }
 
     const paginaFinal = Math.min(this.totalPaginas(), Math.max(1, Math.trunc(pagina)));
+    this.paginaDigitada.set(String(paginaFinal));
     this.irParaPagina(paginaFinal);
   }
 
   onPaginaDigitadaChange(valor: string) {
     this.paginaDigitada.set(valor);
-  }
-
-  paginaAnterior() {
-    this.irParaPagina(this.paginaAtual() - 1);
-  }
-
-  proximaPagina() {
-    this.irParaPagina(this.paginaAtual() + 1);
-  }
-
-  isEllipsis(item: PageItem): item is '...' {
-    return item === '...';
   }
 
   // ===== STATUS (badge) =====
@@ -211,14 +168,12 @@ export class Tccs implements OnInit {
 
   getNomeAluno(alunoId: number): string {
     if (this.carregandoLookups()) return 'Carregando opções...';
-
     const aluno = this.lookup()?.alunosPorId.get(alunoId);
     return aluno ? this.tccLookupService.formatarAluno(aluno) : 'Aluno não encontrado';
   }
 
   getNomeProfessor(professorId: number): string {
     if (this.carregandoLookups()) return 'Carregando opções...';
-
     const professor = this.lookup()?.professoresPorId.get(professorId);
     return professor ? this.tccLookupService.formatarProfessor(professor) : 'Professor não encontrado';
   }
@@ -261,7 +216,7 @@ export class Tccs implements OnInit {
   }
 
   irParaDetalhes(tcc: Tcc) {
-       this.router.navigate(['/tccs', tcc.id, 'detalhes']);
+    this.router.navigate(['/tccs', tcc.id, 'detalhes']);
   }
 
   irParaEdicao(tcc: Tcc) {
