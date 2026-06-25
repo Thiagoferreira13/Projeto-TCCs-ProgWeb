@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 
 export interface TableColumn {
@@ -11,12 +12,12 @@ export type PageItem = number | '...';
 
 @Component({
   selector: 'app-table-list',
-  imports: [MatIconModule],
+  imports: [FormsModule, MatIconModule],
   templateUrl: './table-list.html',
   styleUrl: './table-list.css',
   encapsulation: ViewEncapsulation.None,
 })
-export class TableList {
+export class TableList implements OnChanges {
   @Input() columns: TableColumn[] = [];
   @Input() totalItems: number = 0;
   @Input() pageSize: number = 10;
@@ -26,7 +27,13 @@ export class TableList {
 
   @Output() pageChange = new EventEmitter<number>();
 
-  
+  pageInput = '1';
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['currentPage']) {
+      this.pageInput = String(this.currentPage);
+    }
+  }
 
    get totalPages(): number {
     return Math.max(1, Math.ceil(this.totalItems / this.pageSize));
@@ -76,5 +83,18 @@ export class TableList {
     if (page >= 1 && page <= this.totalPages) {
       this.pageChange.emit(page);
     }
+  }
+
+  goToTypedPage(): void {
+    const page = Number(this.pageInput);
+
+    if (!Number.isFinite(page)) {
+      this.pageInput = String(this.currentPage);
+      return;
+    }
+
+    const clampedPage = Math.min(this.totalPages, Math.max(1, Math.trunc(page)));
+    this.pageInput = String(clampedPage);
+    this.goToPage(clampedPage);
   }
 }

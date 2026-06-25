@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Tcc, TccPayload } from './tcc.model';
+import { Tcc, TccEstatisticas, TccPayload } from './tcc.model';
 
 @Injectable({ providedIn: 'root' })
 export class TccService {
@@ -35,5 +35,10 @@ export class TccService {
   /** DELETE /api/tccs/{id}/ */
   excluir(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}${id}/`);
+  }
+
+  /** GET /api/tccs/estatisticas/ */
+  estatisticas(): Observable<TccEstatisticas> {
+    return this.http.get<TccEstatisticas>(`${this.baseUrl}estatisticas/`);
   }
 }

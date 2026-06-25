@@ -98,6 +98,27 @@
     gap: 20px;
 }
 
+.form-dialog-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--error, #ba1a1a);
+    border-radius: 8px;
+    background: var(--error-container, #ffdad6);
+    color: var(--on-error-container, #93000a);
+    font-size: 13px;
+    line-height: 18px;
+}
+
+.form-dialog-error__icon {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 20px !important;
+    flex-shrink: 0;
+    color: var(--error, #ba1a1a);
+}
+
 /* ── Field ───────────────────────────────────── */
 .form-field {
     display: flex;

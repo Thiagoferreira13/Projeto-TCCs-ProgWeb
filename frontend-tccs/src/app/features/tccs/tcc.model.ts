@@ -41,3 +41,18 @@ export type TccPayload = Omit<
   Tcc,
   'id' | 'tipo_display' | 'idioma_display' | 'status_display'
 >;
+
+export type EstatisticasGrupo = Record<string, number>;
+
+export interface TccEstatisticas {
+  total_geral: number;
+  por_status: EstatisticasGrupo;
+  por_tipo: EstatisticasGrupo;
+  por_idioma: EstatisticasGrupo;
+  por_semestre: EstatisticasGrupo;
+  por_orientador: EstatisticasGrupo;
+  por_coorientador: EstatisticasGrupo;
+  por_curso: EstatisticasGrupo;
+  por_departamento: EstatisticasGrupo;
+  por_unidade_academica: EstatisticasGrupo;
+}

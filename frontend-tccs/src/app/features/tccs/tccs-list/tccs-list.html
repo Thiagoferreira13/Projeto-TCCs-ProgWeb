@@ -48,14 +48,14 @@
   }
 
   <!--Estado de erro-->
-  @if (erro() && !carregando()) {
+  @if ((erro() || erroLookups()) && !carregando()) {
   <div class="table-container">
-    <div class="state-message state-message--error">{{ erro() }}</div>
+    <div class="state-message state-message--error">{{ erro() || erroLookups() }}</div>
   </div>
   }
 
   <!--Tabela-->
-  @if (!carregando() && !erro()) {
+  @if (!carregando() && !erro() && !erroLookups()) {
   <div class="table-container">
 
     <!--Área com scroll horizontal: só header + linhas-->
@@ -73,22 +73,21 @@
       <!--Linhas da tabela-->
       @for (tcc of tccsDaPagina(); track tcc.id) {
       <div class="table-row">
-        <!--Titulo e id-->
+        <!--Titulo-->
         <div class="table-row__col col-title">
           <span class="tcc-title">{{ tcc.titulo }}</span>
-          <span class="tcc-id">ID: {{ tcc.id }}</span>
         </div>
         <!--Resumo truncado-->
         <div class="table-row__col col-resumo">
           <span class="tcc-resumo">{{ tcc.resumo }}</span>
         </div>
-        <!--Aluno (só temos o ID, sem service de Aluno)-->
+        <!--Aluno-->
         <div class="table-row__col col-student">
-          <span class="tcc-name">Aluno #{{ tcc.aluno }}</span>
+          <span class="tcc-name">{{ getNomeAluno(tcc.aluno) }}</span>
         </div>
-        <!--Orientador (só temos o ID, sem service de Professor)-->
+        <!--Orientador-->
         <div class="table-row__col col-advisor">
-          Professor #{{ tcc.orientador }}
+          <span class="tcc-name">{{ getNomeProfessor(tcc.orientador) }}</span>
         </div>
         <!--Tipo e semestre-->
         <div class="table-row__col col-type">
@@ -118,21 +117,42 @@
     <!--Paginação - fora da área de scroll, sempre fixa e centralizada-->
     <div class="table-footer">
       <span class="table-footer__info">
-        Mostrando {{ tccsDaPagina().length }} de {{ todosTccs().length }} resultados
+        Mostrando {{ itemInicial() }}-{{ itemFinal() }} de {{ tccsFiltrados().length }} resultados
       </span>
       <div class="table-footer__pages">
         <button class="page-btn" [disabled]="paginaAtual() === 1" (click)="paginaAnterior()">
           <mat-icon>chevron_left</mat-icon>
         </button>
 
-        @for (pagina of paginas(); track pagina) {
-        <button class="page-btn" [class.page-btn--active]="pagina === paginaAtual()" (click)="irParaPagina(pagina)">
-          {{ pagina }}
-        </button>
+        @for (pagina of paginas(); track $index) {
+          @if (isEllipsis(pagina)) {
+            <span class="page-ellipsis">…</span>
+          } @else {
+            <button class="page-btn" [class.page-btn--active]="pagina === paginaAtual()" (click)="irParaPagina(pagina)">
+              {{ pagina }}
+            </button>
+          }
         }
 
         <button class="page-btn" [disabled]="paginaAtual() === totalPaginas()" (click)="proximaPagina()">
           <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+
+      <div class="table-footer__jump">
+        <span>Página</span>
+        <input
+          class="page-input"
+          type="number"
+          min="1"
+          [max]="totalPaginas()"
+          [ngModel]="paginaDigitada()"
+          (ngModelChange)="onPaginaDigitadaChange($event)"
+          (keydown.enter)="irParaPaginaDigitada()"
+          (blur)="irParaPaginaDigitada()" />
+        <span>de {{ totalPaginas() }}</span>
+        <button class="page-jump-btn" type="button" (click)="irParaPaginaDigitada()" aria-label="Ir para página">
+          <mat-icon>keyboard_return</mat-icon>
         </button>
       </div>
     </div>

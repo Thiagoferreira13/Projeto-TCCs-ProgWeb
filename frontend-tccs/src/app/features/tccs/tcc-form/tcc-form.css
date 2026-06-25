@@ -10,6 +10,24 @@ form {
   width: 100%;
 }
 
+.lookup-error {
+  align-items: center;
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  display: flex;
+  font-size: 14px;
+  gap: 8px;
+  padding: 12px 16px;
+}
+
+.lookup-error mat-icon {
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+}
+
 .form-card {
   background-color: white;
   border: 1px solid #e5e7eb;

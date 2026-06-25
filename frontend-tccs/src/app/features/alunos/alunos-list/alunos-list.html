@@ -45,8 +45,9 @@
   [submitLabel]="alunoEmEdicao ? 'Salvar' : 'Cadastrar'"
   [fields]="fields"
   [initialValue]="initialValue"
+  [errorMessage]="formError"
   (submitted)="onSubmit($event)"
-  (cancelled)="formOpen = false">
+  (cancelled)="formOpen = false; formError = null">
 </app-form-modal>
 
 <app-confirm-modal
