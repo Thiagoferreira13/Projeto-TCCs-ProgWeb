@@ -1,0 +1,51 @@
+<div class="table-wrapper">
+  <div class="table-scroll">
+    <table class="data-table">
+      <thead>
+        <tr class="table-header-row">
+          @for (column of columns; track column.key) {
+            <th class="table-header__col" [style.minWidth]="column.minWidth">
+              {{ column.label }}
+            </th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        <ng-content select="[table-body]"></ng-content>
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="table-footer">
+    <span class="table-footer__info">
+      Mostrando {{ startItem }}–{{ startItem + shownItems - 1 }} de {{ totalItems }} resultados
+    </span>
+
+    <div class="table-footer__nav">
+      <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)" aria-label="Página anterior">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <div class="table-footer__jump">
+        <span class="jump-label">Página</span>
+        <input
+          class="page-input"
+          type="number"
+          min="1"
+          [max]="totalPages"
+          [(ngModel)]="pageInput"
+          (keydown.enter)="goToTypedPage()"
+          (blur)="goToTypedPage()"
+          aria-label="Número da página" />
+        <span class="jump-label">de {{ totalPages }}</span>
+        <button class="page-jump-btn" type="button" (click)="goToTypedPage()" aria-label="Ir para página">
+          <mat-icon>keyboard_return</mat-icon>
+        </button>
+      </div>
+
+      <button class="page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)" aria-label="Próxima página">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </footer>
+</div>

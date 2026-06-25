@@ -1,0 +1,20 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #F9F9FF;
+}
+
+:root {
+    --navbar-height: 4rem;
+
+    --primary-color: #004AC6;
+    
+    --hover-primary-color: #003a9e;
+
+    --primary-text-color: #111C2D;
+    --secondary-text-color: #434655;
+}

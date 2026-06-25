@@ -1,0 +1,240 @@
+/* =========================================== */
+/* ===== CLASSES REUTILIZÁVEIS DE FORM ====== */
+/* Usadas tanto na tela de criar quanto editar */
+/* =========================================== */
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.lookup-error {
+  align-items: center;
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  display: flex;
+  font-size: 14px;
+  gap: 8px;
+  padding: 12px 16px;
+}
+
+.lookup-error mat-icon {
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+}
+
+.form-card {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-card__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a56db;
+  margin: 0;
+}
+
+.form-card__title mat-icon {
+  color: #1a56db;
+  font-size: 20px;
+}
+
+/* Grade de 2 colunas, usada para colocar cards lado a lado (Orientação + Defesa) */
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Linha de campos lado a lado dentro de um mesmo card */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #374151;
+  background-color: white;
+  outline: none;
+  font-family: inherit;
+  width: 100%;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: #1a56db;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.form-input--disabled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.form-input:disabled,
+.form-textarea:disabled {
+  opacity: 1;
+  background-color: white;
+  color: #374151;
+  cursor: default;
+  -webkit-text-fill-color: #374151;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23374151' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.form-select:disabled {
+  cursor: default;
+  opacity: 1;
+  background-color: white;
+  color: #374151;
+  -webkit-text-fill-color: #374151;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: none;
+  padding-right: 14px;
+}
+
+/* Input com ícone de busca (usado em "Pesquisar Aluno") */
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-wrapper__icon {
+  position: absolute;
+  left: 14px;
+  color: #9ca3af;
+  font-size: 20px;
+}
+
+.form-input--search {
+  padding-left: 42px;
+}
+
+/* Cartão de pré-visualização de dados (ex: dados do aluno selecionado) */
+.aluno-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 14px 18px;
+}
+
+.aluno-preview__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.aluno-preview__label {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.aluno-preview__value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* Área de upload de arquivo */
+.file-upload {
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #9ca3af;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.file-upload:hover {
+  background-color: #f9fafb;
+  border-color: #1a56db;
+}
+
+.file-upload mat-icon {
+  font-size: 28px;
+  color: #9ca3af;
+}
+
+/* O espaçamento entre cards/grids agora é controlado
+   pelo "gap" do <form> (ver topo do arquivo) */
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 900px) {
+
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .aluno-preview {
+    grid-template-columns: 1fr;
+  }
+
+}

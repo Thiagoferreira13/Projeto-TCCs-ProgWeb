@@ -1,0 +1,62 @@
+<app-list-page>
+
+  <app-page-header
+    pageTitle="Listagem de Departamentos"
+    subtitle="Gerencie os departamentos e suas unidades acadêmicas."
+    buttonText="Novo Departamento"
+    buttonIcon="add"
+    (buttonClick)="abrirCadastro()">
+  </app-page-header>
+
+  <app-search-bar
+    placeholder="Buscar por nome, sigla ou unidade..."
+    (search)="onSearch($event)">
+  </app-search-bar>
+
+  <app-table-list
+    [columns]="columns"
+    [totalItems]="departamentosFiltrados.length"
+    [pageSize]="pageSize"
+    [currentPage]="currentPage"
+    (pageChange)="onPageChange($event)">
+
+    @for (departamento of paginatedDepartamentos; track departamento.id) {
+      <tr table-body>
+        <td>{{ departamento.nome }}</td>
+        <td>{{ departamento.sigla }}</td>
+        <td>{{ getNomeUnidadeAcademica(departamento.unidade_academica) }}</td>
+        <td>
+          <div class="col-actions">
+            <mat-icon class="action-icon" (click)="editarDepartamento(departamento)">edit</mat-icon>
+            <mat-icon class="action-icon action-icon--delete" (click)="excluirDepartamento(departamento)">delete</mat-icon>
+          </div>
+        </td>
+      </tr>
+    }
+
+  </app-table-list>
+
+</app-list-page>
+
+<app-form-modal
+  [open]="formOpen"
+  [title]="departamentoEmEdicao ? 'Editar Departamento' : 'Novo Departamento'"
+  [titleIcon]="departamentoEmEdicao ? 'edit' : 'business'"
+  [submitLabel]="departamentoEmEdicao ? 'Salvar' : 'Cadastrar'"
+  [fields]="fields"
+  [initialValue]="initialValue"
+  [errorMessage]="formError"
+  (submitted)="onSubmit($event)"
+  (cancelled)="formOpen = false; formError = null">
+</app-form-modal>
+
+<app-confirm-modal
+  [open]="confirmOpen"
+  title="Excluir Departamento"
+  message="Tem certeza que deseja excluir este departamento? Esta ação é irreversível."
+  warningText="Professores e TCCs vinculados a este departamento podem ser afetados."
+  confirmLabel="Excluir"
+  [destructive]="true"
+  (confirmed)="onConfirmDelete()"
+  (cancelled)="confirmOpen = false">
+</app-confirm-modal>

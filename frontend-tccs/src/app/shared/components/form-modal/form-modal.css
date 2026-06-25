@@ -1,0 +1,275 @@
+/* ── Backdrop ────────────────────────────────── */
+.form-dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background-color: rgba(17, 28, 45, 0.4);
+    backdrop-filter: blur(4px);
+    animation: backdrop-in 150ms ease;
+}
+
+/* ── Container ───────────────────────────────── */
+.form-dialog-container {
+    background: var(--surface-container-lowest, #fff);
+    border: 1px solid var(--outline-variant, #c3c6d7);
+    width: 100%;
+    max-width: 512px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: dialog-in 150ms ease;
+    max-height: 90vh;
+}
+
+/* ── Header ──────────────────────────────────── */
+.form-dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: var(--surface-container-low, #f0f3ff);
+    border-bottom: 1px solid var(--outline-variant, #c3c6d7);
+    flex-shrink: 0;
+}
+
+.form-dialog-header__left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.form-dialog-header__icon-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--primary-container, #2563eb);
+    color: var(--on-primary-container, #eeefff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.form-dialog-title {
+    margin: 0;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
+    color: var(--on-surface, #111c2d);
+}
+
+.form-dialog-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    color: var(--on-surface-variant, #434655);
+    transition: background 150ms, color 150ms;
+}
+
+.form-dialog-close-btn:hover {
+    background: var(--surface-container-highest, #d8e3fb);
+    color: var(--on-surface, #111c2d);
+}
+
+/* ── Body ────────────────────────────────────── */
+.form-dialog-body {
+    padding: 24px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-dialog-body form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-dialog-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--error, #ba1a1a);
+    border-radius: 8px;
+    background: var(--error-container, #ffdad6);
+    color: var(--on-error-container, #93000a);
+    font-size: 13px;
+    line-height: 18px;
+}
+
+.form-dialog-error__icon {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 20px !important;
+    flex-shrink: 0;
+    color: var(--error, #ba1a1a);
+}
+
+/* ── Field ───────────────────────────────────── */
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-field__label {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    color: var(--on-surface-variant, #434655);
+}
+
+.form-field__required {
+    color: var(--error, #ba1a1a);
+    margin-left: 2px;
+}
+
+/* Input & Textarea base */
+.form-field__input,
+.form-field__textarea,
+.form-field__select {
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--surface-container-lowest, #fff);
+    border: 1px solid var(--outline-variant, #c3c6d7);
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--on-surface, #111c2d);
+    outline: none;
+    transition: border-color 150ms, box-shadow 150ms;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.form-field__input:focus,
+.form-field__textarea:focus,
+.form-field__select:focus {
+    border-color: var(--primary, #004ac6);
+    box-shadow: 0 0 0 2px rgba(0, 74, 198, 0.2);
+}
+
+.form-field__input--error,
+.form-field__input--error:focus {
+    border-color: var(--error, #ba1a1a) !important;
+    box-shadow: 0 0 0 2px rgba(186, 26, 26, 0.2) !important;
+}
+
+.form-field__textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Select */
+.form-field__select-wrap {
+    position: relative;
+}
+
+.form-field__select {
+    appearance: none;
+    padding-right: 40px;
+    cursor: pointer;
+}
+
+.form-field__select-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--outline, #737686);
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+}
+
+/* Error message */
+.form-field__error {
+    font-size: 11px;
+    line-height: 16px;
+    color: var(--error, #ba1a1a);
+}
+
+/* ── Footer ──────────────────────────────────── */
+.form-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    background: var(--surface-container-low, #f0f3ff);
+    border-top: 1px solid var(--outline-variant, #c3c6d7);
+    flex-shrink: 0;
+}
+
+.form-dialog-btn {
+    padding: 8px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: opacity 150ms, transform 100ms, background 150ms;
+}
+
+.form-dialog-btn:active {
+    transform: scale(0.97);
+}
+
+.form-dialog-btn--cancel {
+    background: transparent;
+    color: var(--on-surface-variant, #434655);
+}
+
+.form-dialog-btn--cancel:hover {
+    background: var(--surface-container-highest, #d8e3fb);
+}
+
+.form-dialog-btn--submit {
+    background: var(--primary, #004ac6);
+    color: var(--on-primary, #fff);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    padding: 8px 32px;
+}
+
+.form-dialog-btn--submit:hover {
+    opacity: 0.9;
+}
+
+/* ── Animações ───────────────────────────────── */
+@keyframes backdrop-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes dialog-in {
+    from {
+        opacity: 0;
+        transform: scale(0.96) translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}

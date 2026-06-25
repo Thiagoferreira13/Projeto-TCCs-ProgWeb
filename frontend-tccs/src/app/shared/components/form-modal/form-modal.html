@@ -1,0 +1,101 @@
+@if (open) {
+  <div class="form-dialog-backdrop" (click)="onCancel()">
+    <div class="form-dialog-container" (click)="$event.stopPropagation()">
+
+      <!-- Header -->
+      <header class="form-dialog-header">
+        <div class="form-dialog-header__left">
+          <div class="form-dialog-header__icon-wrap">
+            <mat-icon>{{ titleIcon }}</mat-icon>
+          </div>
+          <h2 class="form-dialog-title">{{ title }}</h2>
+        </div>
+        <button class="form-dialog-close-btn" type="button" (click)="onCancel()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </header>
+
+      <!-- Body -->
+      <div class="form-dialog-body">
+        @if (errorMessage) {
+          <div class="form-dialog-error">
+            <mat-icon class="form-dialog-error__icon">error</mat-icon>
+            <span>{{ errorMessage }}</span>
+          </div>
+        }
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" id="form-dialog-form">
+          @for (field of fields; track field.key) {
+            <div class="form-field">
+              <label class="form-field__label" [for]="field.key">
+                {{ field.label }}
+                @if (field.required) {
+                  <span class="form-field__required">*</span>
+                }
+              </label>
+
+              @switch (field.type) {
+                @case ('select') {
+                  <div class="form-field__select-wrap">
+                    <select
+                      class="form-field__select"
+                      [class.form-field__input--error]="isInvalid(field.key)"
+                      [id]="field.key"
+                      [formControlName]="field.key">
+                      <option value="" disabled>
+                        {{ field.placeholder ?? 'Selecione...' }}
+                      </option>
+                      @for (opt of field.options; track opt.value) {
+                        <option [value]="opt.value">{{ opt.label }}</option>
+                      }
+                    </select>
+                    <mat-icon class="form-field__select-arrow">expand_more</mat-icon>
+                  </div>
+                }
+                @case ('textarea') {
+                  <textarea
+                    class="form-field__textarea"
+                    [class.form-field__input--error]="isInvalid(field.key)"
+                    [id]="field.key"
+                    [formControlName]="field.key"
+                    [placeholder]="field.placeholder ?? ''"
+                    rows="3">
+                  </textarea>
+                }
+                @default {
+                  <input
+                    class="form-field__input"
+                    [class.form-field__input--error]="isInvalid(field.key)"
+                    [id]="field.key"
+                    [type]="field.type"
+                    [formControlName]="field.key"
+                    [placeholder]="field.placeholder ?? ''" />
+                }
+              }
+
+              @if (isInvalid(field.key)) {
+                <span class="form-field__error">
+                  {{ field.label }} é obrigatório.
+                </span>
+              }
+            </div>
+          }
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <footer class="form-dialog-footer">
+        <button class="form-dialog-btn form-dialog-btn--cancel" type="button" (click)="onCancel()">
+          {{ cancelLabel }}
+        </button>
+        <button
+          class="form-dialog-btn form-dialog-btn--submit"
+          type="submit"
+          form="form-dialog-form">
+          {{ isEditMode ? submitLabel : submitLabel }}
+        </button>
+      </footer>
+
+    </div>
+  </div>
+}

@@ -1,0 +1,18 @@
+services:
+  backend:
+    build:
+      context: ./backend-tccs
+    container_name: backend-tccs
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend-tccs:/app
+
+  frontend:
+    build:
+      context: ./frontend-tccs
+    container_name: frontend-tccs
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend

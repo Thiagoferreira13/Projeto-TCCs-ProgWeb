@@ -1,0 +1,153 @@
+<header>
+    <nav class="navbar-container">
+
+        <span class="title">Portal de TCCs</span>
+
+        <button class="burger" (click)="toggleMenu()">
+            <span class="material-symbols-outlined">
+                {{ menuOpen ? 'close' : 'menu' }}
+            </span>
+        </button>
+
+        <ul class="navbar-list" [class.open]="menuOpen">
+
+            <li>
+                <a
+                    class="navbar-link"
+                    routerLink="/"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    (click)="closeMenu()"
+                >
+                    Dashboard
+                </a>
+            </li>
+
+            <!-- Desktop -->
+            <li class="dropdown-item desktop-menu" routerLinkActive="active">
+                <span class="navbar-link">Pessoas</span>
+
+                <ul>
+                    <li>
+                        <a
+                            routerLink="/alunos"
+                            routerLinkActive="active"
+                        >
+                            Alunos
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                            routerLink="/professores"
+                            routerLinkActive="active"
+                        >
+                            Professores
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="dropdown-item desktop-menu" routerLinkActive="active">
+                <span class="navbar-link">Estrutura</span>
+
+                <ul>
+                    <li>
+                        <a
+                            routerLink="/cursos"
+                            routerLinkActive="active"
+                        >
+                            Cursos
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                            routerLink="/departamentos"
+                            routerLinkActive="active"
+                        >
+                            Departamentos
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                            routerLink="/unidades-academicas"
+                            routerLinkActive="active"
+                        >
+                            Uni. Acadêmicas
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Mobile -->
+            <li class="mobile-menu">
+                <a
+                    class="navbar-link"
+                    routerLink="/alunos"
+                    routerLinkActive="active"
+                    (click)="closeMenu()"
+                >
+                    Alunos
+                </a>
+            </li>
+
+            <li class="mobile-menu">
+                <a
+                    class="navbar-link"
+                    routerLink="/professores"
+                    routerLinkActive="active"
+                    (click)="closeMenu()"
+                >
+                    Professores
+                </a>
+            </li>
+
+            <li class="mobile-menu">
+                <a
+                    class="navbar-link"
+                    routerLink="/cursos"
+                    routerLinkActive="active"
+                    (click)="closeMenu()"
+                >
+                    Cursos
+                </a>
+            </li>
+
+            <li class="mobile-menu">
+                <a
+                    class="navbar-link"
+                    routerLink="/departamentos"
+                    routerLinkActive="active"
+                    (click)="closeMenu()"
+                >
+                    Departamentos
+                </a>
+            </li>
+
+            <li class="mobile-menu">
+                <a
+                    class="navbar-link"
+                    routerLink="/unidades-academicas"
+                    routerLinkActive="active"
+                    (click)="closeMenu()"
+                >
+                    Uni. Acadêmicas
+                </a>
+            </li>
+
+            <li>
+                <a
+                    class="navbar-link"
+                    routerLink="/tccs"
+                    routerLinkActive="active"
+                    (click)="closeMenu()">
+                    TCCs
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+</header>

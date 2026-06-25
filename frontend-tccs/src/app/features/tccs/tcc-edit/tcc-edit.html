@@ -1,0 +1,39 @@
+<div class="page-container">
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="page-header__info">
+      <h1 class="page-header__title">Editar Registro de TCC</h1>
+      <p class="page-header__subtitle">
+        Atualize as informações do trabalho de conclusão de curso.
+      </p>
+    </div>
+  </div>
+
+  @if (carregando()) {
+  <div class="form-error" style="background-color: #f3f4f6; color: #6b7280;">Carregando dados do TCC...</div>
+  }
+
+  @if (erro()) {
+  <div class="form-error">{{ erro() }}</div>
+  }
+
+  @if (!carregando()) {
+  <!-- FORMULÁRIO (componente reutilizável), preenchido com os dados carregados -->
+  <app-tcc-form [tcc]="tcc()"></app-tcc-form>
+
+  <!-- AÇÕES -->
+  <div class="form-actions">
+    <button class="btn-text" (click)="cancelar()" [disabled]="salvando()">Cancelar</button>
+    <button class="btn-primary" (click)="salvar()" [disabled]="salvando()">
+      <mat-icon>save</mat-icon>
+      {{ salvando() ? 'Salvando...' : 'Atualizar TCC' }}
+    </button>
+  </div>
+  }
+
+  <!--Footer da página-->
+  <div class="page-footer">
+    © 2024 Universidade Federal - Sistema de Gestão de TCC
+  </div>
+
+</div>
