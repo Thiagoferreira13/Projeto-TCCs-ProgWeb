@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TccForm } from '../tcc-form/tcc-form';
-import { TccService } from '../tcc.service';
-import { Tcc, TccPayload } from '../tcc.model';
+import { TccService } from '../../../core/service/tcc.service';
+import { Tcc, TccPayload } from '../../../core/models/tcc.model';
 
 @Component({
   selector: 'app-tcc-edit',

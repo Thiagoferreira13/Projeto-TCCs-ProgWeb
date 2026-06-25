@@ -1,9 +1,9 @@
 <form [formGroup]="form">
   @if (erroOpcoes()) {
-    <div class="lookup-error">
-      <mat-icon>error</mat-icon>
-      <span>{{ erroOpcoes() }}</span>
-    </div>
+  <div class="lookup-error">
+    <mat-icon>error</mat-icon>
+    <span>{{ erroOpcoes() }}</span>
+  </div>
   }
 
   <!--Card: Informações do Trabalho-->
@@ -68,15 +68,15 @@
       <label class="form-label">Aluno</label>
       <select class="form-select" formControlName="aluno">
         @if (carregandoOpcoes()) {
-          <option [ngValue]="null">Carregando opções...</option>
+        <option [ngValue]="null">Carregando opções...</option>
         } @else {
-          <option [ngValue]="null" disabled>Selecione o aluno</option>
-          @if (alunoSelecionadoAusente()) {
-            <option [ngValue]="alunoSelecionadoId()">Aluno não encontrado</option>
-          }
-          @for (aluno of alunos(); track aluno.id) {
-            <option [ngValue]="aluno.id">{{ alunoLabel(aluno) }}</option>
-          }
+        <option [ngValue]="null" disabled>Selecione o aluno</option>
+        @if (alunoSelecionadoAusente()) {
+        <option [ngValue]="alunoSelecionadoId()">Aluno não encontrado</option>
+        }
+        @for (aluno of alunos(); track aluno.id) {
+        <option [ngValue]="aluno.id">{{ alunoLabel(aluno) }}</option>
+        }
         }
       </select>
     </div>
@@ -96,15 +96,15 @@
         <label class="form-label">Orientador</label>
         <select class="form-select" formControlName="orientador">
           @if (carregandoOpcoes()) {
-            <option [ngValue]="null">Carregando opções...</option>
+          <option [ngValue]="null">Carregando opções...</option>
           } @else {
-            <option [ngValue]="null" disabled>Selecione o orientador</option>
-            @if (professorSelecionadoAusente('orientador')) {
-              <option [ngValue]="professorSelecionadoId('orientador')">Professor não encontrado</option>
-            }
-            @for (professor of professores(); track professor.id) {
-              <option [ngValue]="professor.id">{{ professorLabel(professor) }}</option>
-            }
+          <option [ngValue]="null" disabled>Selecione o orientador</option>
+          @if (professorSelecionadoAusente('orientador')) {
+          <option [ngValue]="professorSelecionadoId('orientador')">Professor não encontrado</option>
+          }
+          @for (professor of professores(); track professor.id) {
+          <option [ngValue]="professor.id">{{ professorLabel(professor) }}</option>
+          }
           }
         </select>
       </div>
@@ -113,15 +113,15 @@
         <label class="form-label">Coorientador (opcional)</label>
         <select class="form-select" formControlName="coorientador">
           @if (carregandoOpcoes()) {
-            <option [ngValue]="null">Carregando opções...</option>
+          <option [ngValue]="null">Carregando opções...</option>
           } @else {
-            <option [ngValue]="null">Sem coorientador</option>
-            @if (professorSelecionadoAusente('coorientador')) {
-              <option [ngValue]="professorSelecionadoId('coorientador')">Professor não encontrado</option>
-            }
-            @for (professor of professores(); track professor.id) {
-              <option [ngValue]="professor.id">{{ professorLabel(professor) }}</option>
-            }
+          <option [ngValue]="null">Sem coorientador</option>
+          @if (professorSelecionadoAusente('coorientador')) {
+          <option [ngValue]="professorSelecionadoId('coorientador')">Professor não encontrado</option>
+          }
+          @for (professor of professores(); track professor.id) {
+          <option [ngValue]="professor.id">{{ professorLabel(professor) }}</option>
+          }
           }
         </select>
       </div>
@@ -148,7 +148,22 @@
       <!--Semestre-->
       <div class="form-field">
         <label class="form-label">Semestre Letivo</label>
-        <input class="form-input" type="text" formControlName="semestre_letivo_defesa" placeholder="Ex: 2024/2" />
+        <select class="form-select" formControlName="semestre_letivo_defesa">
+          <option value="">Selecione o semestre</option>
+          <option value="2020/1">2020/1</option>
+          <option value="2020/2">2020/2</option>
+          <option value="2021/1">2021/1</option>
+          <option value="2021/2">2021/2</option>
+          <option value="2022/1">2022/1</option>
+          <option value="2022/2">2022/2</option>
+          <option value="2023/1">2023/1</option>
+          <option value="2023/2">2023/2</option>
+          <option value="2024/1">2024/1</option>
+          <option value="2024/2">2024/2</option>
+          <option value="2025/1">2025/1</option>
+          <option value="2025/2">2025/2</option>
+          <option value="2026/1">2026/1</option>
+        </select>
       </div>
     </div>
 
@@ -169,15 +184,15 @@
         <label class="form-label">Presidente</label>
         <select class="form-select" formControlName="presidente">
           @if (carregandoOpcoes()) {
-            <option [ngValue]="null">Carregando opções...</option>
+          <option [ngValue]="null">Carregando opções...</option>
           } @else {
-            <option [ngValue]="null" disabled>Selecione o presidente</option>
-            @if (professorSelecionadoAusente('presidente')) {
-              <option [ngValue]="professorSelecionadoId('presidente')">Professor não encontrado</option>
-            }
-            @for (professor of professores(); track professor.id) {
-              <option [ngValue]="professor.id">{{ professorLabel(professor) }}</option>
-            }
+          <option [ngValue]="null" disabled>Selecione o presidente</option>
+          @if (professorSelecionadoAusente('presidente')) {
+          <option [ngValue]="professorSelecionadoId('presidente')">Professor não encontrado</option>
+          }
+          @for (professor of professores(); track professor.id) {
+          <option [ngValue]="professor.id">{{ professorLabel(professor) }}</option>
+          }
           }
         </select>
       </div>
@@ -186,15 +201,15 @@
         <label class="form-label">Primeiro Membro</label>
         <select class="form-select" formControlName="primeiro_membro">
           @if (carregandoOpcoes()) {
-            <option [ngValue]="null">Carregando opções...</option>
+          <option [ngValue]="null">Carregando opções...</option>
           } @else {
-            <option [ngValue]="null" disabled>Selecione o primeiro membro</option>
-            @if (professorSelecionadoAusente('primeiro_membro')) {
-              <option [ngValue]="professorSelecionadoId('primeiro_membro')">Professor não encontrado</option>
-            }
-            @for (professor of professores(); track professor.id) {
-              <option [ngValue]="professor.id">{{ professorLabel(professor) }}</option>
-            }
+          <option [ngValue]="null" disabled>Selecione o primeiro membro</option>
+          @if (professorSelecionadoAusente('primeiro_membro')) {
+          <option [ngValue]="professorSelecionadoId('primeiro_membro')">Professor não encontrado</option>
+          }
+          @for (professor of professores(); track professor.id) {
+          <option [ngValue]="professor.id">{{ professorLabel(professor) }}</option>
+          }
           }
         </select>
       </div>
@@ -203,15 +218,15 @@
         <label class="form-label">Segundo Membro</label>
         <select class="form-select" formControlName="segundo_membro">
           @if (carregandoOpcoes()) {
-            <option [ngValue]="null">Carregando opções...</option>
+          <option [ngValue]="null">Carregando opções...</option>
           } @else {
-            <option [ngValue]="null" disabled>Selecione o segundo membro</option>
-            @if (professorSelecionadoAusente('segundo_membro')) {
-              <option [ngValue]="professorSelecionadoId('segundo_membro')">Professor não encontrado</option>
-            }
-            @for (professor of professores(); track professor.id) {
-              <option [ngValue]="professor.id">{{ professorLabel(professor) }}</option>
-            }
+          <option [ngValue]="null" disabled>Selecione o segundo membro</option>
+          @if (professorSelecionadoAusente('segundo_membro')) {
+          <option [ngValue]="professorSelecionadoId('segundo_membro')">Professor não encontrado</option>
+          }
+          @for (professor of professores(); track professor.id) {
+          <option [ngValue]="professor.id">{{ professorLabel(professor) }}</option>
+          }
           }
         </select>
       </div>

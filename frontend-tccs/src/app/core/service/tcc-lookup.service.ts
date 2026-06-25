@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, forkJoin, map, shareReplay } from 'rxjs';
-import { Aluno } from '../../core/models/aluno.model';
-import { Professor } from '../../core/models/professor.model';
-import { AlunoService } from '../../core/service/aluno.service';
-import { ProfessorService } from '../../core/service/professor.service';
+import { Aluno } from '../models/aluno.model';
+import { Professor } from '../models/professor.model';
+import { AlunoService } from './aluno.service';
+import { ProfessorService } from './professor.service';
 
 export interface TccLookupData {
   alunos: Aluno[];
@@ -50,5 +50,9 @@ export class TccLookupService {
 
   formatarProfessor(professor: Professor): string {
     return professor.nome;
+  }
+
+  invalidarCache(): void {
+    this.lookup$ = undefined;
   }
 }

@@ -2,8 +2,8 @@ import { Component, ViewChild, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TccForm } from '../tcc-form/tcc-form';
-import { TccService } from '../tcc.service';
-import { TccPayload } from '../tcc.model';
+import { TccService } from '../../../core/service/tcc.service';
+import { TccPayload } from '../../../core/models/tcc.model';
 
 @Component({
   selector: 'app-tcc-create',

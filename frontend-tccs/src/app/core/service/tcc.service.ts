@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Tcc, TccEstatisticas, TccPayload } from './tcc.model';
+import { Tcc, TccEstatisticas, TccPayload } from '../../core/models/tcc.model';
 
 @Injectable({ providedIn: 'root' })
 export class TccService {

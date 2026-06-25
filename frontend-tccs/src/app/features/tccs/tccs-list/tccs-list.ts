@@ -2,10 +2,10 @@ import { Component, OnInit, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { TccDeleteModal, TccResumo } from '../tcc-delete-modal/tcc-delete-modal';
-import { TccService } from '../tcc.service';
-import { Tcc } from '../tcc.model';
+import { TccService } from '../../../core/service/tcc.service';
+import { Tcc } from '../../../core/models/tcc.model';
 import { Router, RouterLink } from '@angular/router';
-import { TccLookupData, TccLookupService } from '../tcc-lookup.service';
+import { TccLookupData, TccLookupService } from '../../../core/service/tcc-lookup.service';
 
 const ITENS_POR_PAGINA = 10;
 

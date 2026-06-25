@@ -2,8 +2,8 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
-import { TccService } from '../tccs/tcc.service';
-import { EstatisticasGrupo, TccEstatisticas } from '../tccs/tcc.model';
+import { TccService } from '../../core/service/tcc.service';
+import { EstatisticasGrupo, TccEstatisticas } from '../../core/models/tcc.model';
 
 interface SummaryCard {
   label: string;

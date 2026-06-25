@@ -1,10 +1,10 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, computed, inject, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Tcc } from '../tcc.model';
+import { Tcc } from '../../../core/models/tcc.model';
 import { Aluno } from '../../../core/models/aluno.model';
 import { Professor } from '../../../core/models/professor.model';
-import { TccLookupData, TccLookupService } from '../tcc-lookup.service';
+import { TccLookupData, TccLookupService } from '../../../core/service/tcc-lookup.service';
 
 type ProfessorControlName =
   | 'orientador'
@@ -87,6 +87,7 @@ export class TccForm implements OnChanges, OnInit {
   carregarOpcoes(): void {
     this.carregandoOpcoes.set(true);
     this.erroOpcoes.set(null);
+    this.tccLookupService.invalidarCache();
 
     this.tccLookupService.carregar().subscribe({
       next: (lookup) => {
