@@ -169,6 +169,7 @@ export class Departamentos implements OnInit {
         error: (erro) => {
           console.error('Erro ao editar departamento', erro);
           this.formError = getApiErrorMessage(erro, 'Não foi possível editar o departamento.');
+          this.cdr.detectChanges();
         }
       });
       return;
@@ -179,6 +180,7 @@ export class Departamentos implements OnInit {
       error: (erro) => {
         console.error('Erro ao cadastrar departamento', erro);
         this.formError = getApiErrorMessage(erro, 'Não foi possível cadastrar o departamento.');
+        this.cdr.detectChanges();
       }
     });
   }
